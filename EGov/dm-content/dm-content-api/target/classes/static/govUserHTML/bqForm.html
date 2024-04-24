@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <!-- Google Chrome Frame也可以让IE用上Chrome的引擎: -->
+    <meta name="renderer" content="webkit">
+    <!--国产浏览器高速模式-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="李幸阜"/>
+    <!-- 作者 -->
+    <meta name="revised" content="李幸阜"/>
+    <!-- 定义页面的最新版本 -->
+    <meta name="description" content="网站首页"/>
+    <!-- 网站简介 -->
+    <meta name="keywords" content="搜索关键字，以半角英文逗号隔开"/>
+    <title>李幸阜开发</title>
+
+    <!-- 公共样式 开始 -->
+    <link rel="stylesheet" type="text/css" href="../css/base.css">
+    <link rel="stylesheet" type="text/css" href="../css/iconfont2.css">
+    <link rel="stylesheet" type="text/css" href="../layui/css/layui.css">
+    <script type="text/javascript" src="../framework/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="../layui/layui.js"></script>
+    <!-- 滚动条插件 -->
+    <link rel="stylesheet" type="text/css" href="../css/jquery.mCustomScrollbar.css">
+    <script src="../framework/jquery-ui-1.10.4.min.js"></script>
+    <script src="../framework/jquery.mousewheel.min.js"></script>
+    <script src="../framework/jquery.mCustomScrollbar.min.js"></script>
+    <script src="../framework/echarts.min.js"></script>
+    <script src="../framework/cframe.js"></script><!-- 仅供所有子页面使用 -->
+    <!-- 公共样式 结束 -->
+
+    <link rel="stylesheet" type="text/css" href="../css/reportForm.css">
+
+</head>
+
+<body>
+<div class="cBody">
+    <div class="console">
+        <form class="layui-form" action="">
+            <div class="layui-form-item">
+                <div class="reportForm" style="width: 100%;">
+                    <a class="typeBut bl" href="./dataCountForm.html">留言</a>
+                    <a class="typeBut active" href="./bqForm.html">各标签留言</a>
+                    <a class="typeBut" href="./areaForm.html">各地区留言</a>
+                    <a class="typeBut" href="./ListHotMessages.html">热点留言</a>
+                    <a class="typeBut br" href="./cyForm.html">词云</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="reportForm_main">
+        <div class="collectData">
+            <div class="layui-row">
+                <div class="layui-col-md3 br">
+                    <div class="layui-col-md6">
+                        <div class="title">访问人数</div>
+                        <div class="nums"><font id="visitCount">0</font><span>人</span></div>
+                    </div>
+                </div>
+                <div class="layui-col-md3 br">
+                    <div class="layui-col-md6">
+                        <div class="title">留言总数量</div>
+                        <div class="nums"><font id="messageCount">0</font></div>
+                    </div>
+                    <div class="layui-col-md6">
+                        <div class="title">用户总数量</div>
+                        <div class="nums"><font id="userCount">0</font></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="reportType_tj">
+            <form class="layui-form" action="">
+                <div class="layui-input-inline">
+                    <select name="reportType" id="reportType" lay-filter="reportType">
+                        <option value="留言数量折线图">留言数量折线图</option>
+                        <option value="各标签留言分布柱状图" selected>各标签留言分布柱状图</option>
+                        <option value="各区域留言">各区域留言</option>
+                        <option value="热点留言">热点留言</option>
+                    </select>
+                </div>
+                <div class="layui-input-inline">
+                    <a class="pressBut">【按月】</a>
+                </div>
+                <div class="changeRate">
+                    <div class="layui-col-md6 left">100</div>
+                    <div class="layui-col-md6 right">
+                        <span class="data up">-99.42%<i class="iconfont icon-xiangshangjiantoucuxiao"></i></span>
+                        <span class="text">相比上月</span>
+                    </div>
+                </div>
+                <div id="myReport" style="width: 100%; height: 500px;"></div>
+            </form>
+            <script type="text/javascript">
+                // 基于准备好的dom，初始化echarts实例
+                var myChart = echarts.init(document.getElementById('myReport'));
+
+                // 指定图表的配置项和数据
+                var option = {
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{b}: {c}",
+                    },//提示框，鼠标悬浮交互时的信息提示
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: true,
+                        offset: 0, // x轴相对于默认位置的偏移
+                        data: ['城乡建设', '党务政务', '国土资源', '环境保护', '纪检监察', '交通运输', '教育文体', '经济管理', '科技与信息产业', '劳动和社会保障', '民政', '农村农业', '商贸旅游', '卫生计生', '政法', '未知'],
+                        name: '标签',    // 轴名称
+                        nameLocation: 'end',  // 轴名称相对位置
+                        axisLine: {       // 坐标轴 轴线
+                            show: true,  // 是否显示
+                            symbol: ['none', 'arrow'],  // 是否显示轴线箭头
+                            // symbolSize: [8, 8], // 箭头大小
+                            // symbolOffset: [0, 7],  // 箭头位置
+                            // ------   线 ---------
+                        },
+                        axisLabel: {
+                            show: true,  // 是否显示
+                            inside: false, // 是否朝内
+                            interval: 0,//横轴信息全部显示
+                            // rotate:-10,//-15度角倾斜显示
+                            formatter: function (value) {
+                                return value.split("").join("\n");
+                            },
+                            margin: 5, // 刻度标签与轴线之间的距离
+                        },
+                        axisTick: {    // 坐标轴 刻度
+                            show: true,  // 是否显示
+                            inside: true,  // 是否朝内
+                            length: 3,     // 长度
+                            lineStyle: {   // 默认取轴线的样式
+                                color: 'blue',
+                                width: 3,
+                                type: 'solid'
+                            }
+                        },
+                    },
+                    yAxis: {
+                        name: '数量',    // 轴名称
+                        nameLocation: 'end',  // 轴名称相对位置
+                        axisLine: {       // 坐标轴 轴线
+                            show: true,  // 是否显示
+                            symbol: ['none', 'arrow'],  // 是否显示轴线箭头
+                            // symbolSize: [8, 8], // 箭头大小
+                            // symbolOffset: [0, 7],  // 箭头位置
+                            // ------   线 ---------
+                        },
+                        type: 'value'
+                    },
+                    grid: {
+                        top: 40,
+                        bottom: 20,
+                        left: 5,
+                        right: 40,
+                        containLabel: true,
+                    },
+                    series: [{
+                        barWidth: 35,  // 柱形的宽度
+                        data: [820, 932, 901, 934, 1290, 1330, 1320, 820, 120, 210, 340, 430, 550, 680, 720, 330],
+                        type: 'bar',
+                        itemStyle: {
+                            normal: { //柱子颜色
+                                color: 'red',
+                                barBorderRadius: [5, 5, 0, 0],
+                            }
+                        },
+                        legendHoverLink: true,  // 是否启用图列 hover 时的联动高亮
+                        label: {   // 图形上的文本标签
+                            show: true,
+                            position: 'top', // 相对位置
+                            rotate: 0,  // 旋转角度
+                            color: '#000000'
+                        },
+                    },
+                    ],
+                };
+                myChart.setOption(option);
+
+                // function refreshData(data,_this) {
+                // 	$(_this).addClass("active");
+                // 	$(_this).siblings().removeClass("active");
+                // 	if(!myChart) {
+                // 		return;
+                // 	}
+                //
+                // 	//更新数据
+                // 	var option = myChart.getOption();
+                // 	option.series[0].data = data;
+                // 	myChart.setOption(option);
+                // }
+            </script>
+
+        </div>
+    </div>
+    <!-- layUI 分页模块 -->
+</div>
+</body>
+<script>
+    var cache = null;
+    $.ajax({
+        type: "get",
+        url: "/EGov/redisDate/getCache",
+        async: false,
+        success: function (data) {
+            cache = data;
+            document.getElementById("visitCount").innerText = data.visitCount;
+            document.getElementById("messageCount").innerText = data.messageCount;
+            document.getElementById("userCount").innerText = data.userCount;
+            //更新数据
+            var myChart = echarts.init(document.getElementById('myReport'));
+            var option = myChart.getOption();
+            option.series[0].data = [data.cxjsMessageCount, data.dzdwMessageCount, data.gtzyMessageCount, data.hjbhMessageCount, data.jjjcMessageCount, data.jtysMessageCount, data.jywtMessageCount, data.jjglMessageCount, data.kjxxMessageCount, data.ndshMessageCount, data.mzMessageCount, data.nyncMessageCount, data.smlyMessageCount, data.wsjsMessageCount, data.zfMessageCount, data.wzMessageCount];
+            myChart.setOption(option);
+        }
+    });
+</script>
+
+</html>

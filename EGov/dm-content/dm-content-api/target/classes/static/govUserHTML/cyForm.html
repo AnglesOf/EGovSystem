@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <!-- Google Chrome Frame也可以让IE用上Chrome的引擎: -->
+    <meta name="renderer" content="webkit">
+    <!--国产浏览器高速模式-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="李幸阜"/>
+    <!-- 作者 -->
+    <meta name="revised" content="李幸阜"/>
+    <!-- 定义页面的最新版本 -->
+    <meta name="description" content="网站首页"/>
+    <!-- 网站简介 -->
+    <meta name="keywords" content="搜索关键字，以半角英文逗号隔开"/>
+    <title>李幸阜开发</title>
+
+    <!-- 公共样式 开始 -->
+    <link rel="stylesheet" type="text/css" href="../css/base.css">
+    <link rel="stylesheet" type="text/css" href="../css/iconfont2.css">
+    <link rel="stylesheet" type="text/css" href="../layui/css/layui.css">
+    <script type="text/javascript" src="../framework/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="../layui/layui.js"></script>
+    <!-- 滚动条插件 -->
+    <link rel="stylesheet" type="text/css" href="../css/jquery.mCustomScrollbar.css">
+    <script src="../framework/jquery-ui-1.10.4.min.js"></script>
+    <script src="../framework/jquery.mousewheel.min.js"></script>
+    <script src="../framework/jquery.mCustomScrollbar.min.js"></script>
+    <script src="../framework/echarts.min.js"></script>
+    <script src="../framework/cframe.js"></script><!-- 仅供所有子页面使用 -->
+    <!-- 公共样式 结束 -->
+    <link rel="stylesheet" type="text/css" href="../css/reportForm.css">
+</head>
+
+<body>
+<div class="cBody">
+    <div class="console">
+        <form class="layui-form" action="">
+            <div class="layui-form-item">
+                <div class="reportForm" style="width: 100%;">
+                    <a class="typeBut bl" href="./dataCountForm.html">留言</a>
+                    <a class="typeBut" href="./bqForm.html">各标签留言</a>
+                    <a class="typeBut" href="./areaForm.html">各地区留言</a>
+                    <a class="typeBut" href="./ListHotMessages.html">热点留言</a>
+                    <a class="typeBut br active" href="./cyForm.html">词云</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="reportForm_main">
+        <div class="collectData">
+            <div class="layui-row">
+                <div class="layui-col-md3 br">
+                    <div class="layui-col-md6">
+                        <div class="title">访问人数</div>
+                        <div class="nums"><font id="visitCount">0</font><span>人</span></div>
+                    </div>
+                </div>
+                <div class="layui-col-md3 br">
+                    <div class="layui-col-md6">
+                        <div class="title">留言总数量</div>
+                        <div class="nums"><font id="messageCount">0</font></div>
+                    </div>
+                    <div class="layui-col-md6">
+                        <div class="title">用户总数量</div>
+                        <div class="nums"><font id="userCount">0</font></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="layui-btn" onclick="ciyun(this)">开始计算词云</button>
+
+        <div class="reportType_tj">
+            <div style="font-size: 20px;margin-left: 3%;">
+                城乡建设:
+                <img src="http://127.0.0.1:8000/media/城乡建设.png" width="400" height="300" style="margin-right: 60px;" alt="城乡建设词云">
+                环境保护:
+                <img src="http://127.0.0.1:8000/media/环境保护.png" width="400" height="300" alt="环境保护词云">
+            </div>
+            <div style="font-size: 20px;margin-left: 3%;margin-top: 3%;">
+                交通运输:
+                <img src="http://127.0.0.1:8000/media/交通运输.png" width="400" height="300" style="margin-right: 60px;" alt="交通运输词云">
+                教育文体:
+                <img src="http://127.0.0.1:8000/media/教育文体.png" width="400" height="300" alt="教育文体词云">
+            </div>
+            <div style="font-size: 20px;margin-left: -30px;margin-top: 3%;">
+                劳动和社会保障:
+                <img src="http://127.0.0.1:8000/media/劳动和社会保障.png" width="400" height="300" style="margin-right: 60px;" alt="劳动和社会保障词云">
+                商贸旅游:
+                <img src="http://127.0.0.1:8000/media/商贸旅游.png" width="400" height="300" alt="商贸旅游词云">
+            </div>
+            <div style="font-size: 20px;margin-left: 25%;margin-top: 3%;">
+                卫生计生:
+                <img src="http://127.0.0.1:8000/media/卫生计生.png" width="400" height="300" alt="卫生计生词云">
+            </div>
+        </div>
+    </div>
+    <!-- layUI 分页模块 -->
+</div>
+</body>
+<script>
+    $.ajax({
+        type: "get",
+        url: "/EGov/redisDate/getCache",
+        async: false,
+        success: function (data) {
+            document.getElementById("visitCount").innerText = data.visitCount;
+            document.getElementById("messageCount").innerText = data.messageCount;
+            document.getElementById("userCount").innerText = data.userCount;
+        }
+    });
+
+    function ciyun(t) {
+        t.innerText="已启动模型";
+        $.ajax({
+            type: "GET",
+            url: "/EGov/hotTopic/calCiYun",//对应controller的URL
+            async: true,
+            data: {},
+            success: function (data) {
+                if(data===1){
+                    t.innerText="计算完成";
+                }else {
+                    t.innerText="启动模型失败";
+                }
+            }
+        });
+    }
+</script>
+
+</html>

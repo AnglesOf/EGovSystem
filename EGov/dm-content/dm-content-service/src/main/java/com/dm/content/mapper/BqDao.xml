@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.dm.content.mapper.BqDao">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dm.content.model.po.Bq">
+        <id column="bq_id" property="bq_id" />
+        <result column="bq" property="bq" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        bq_id, bq
+    </sql>
+    <select id="selectBq" resultType="com.dm.content.model.po.Bq">
+        select * from t_bq
+    </select>
+</mapper>

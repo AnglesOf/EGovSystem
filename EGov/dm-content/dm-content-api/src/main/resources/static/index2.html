@@ -1,0 +1,509 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <!-- Google Chrome Frame也可以让IE用上Chrome的引擎: -->
+    <meta name="renderer" content="webkit">
+    <!--国产浏览器高速模式-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="李幸阜"/>
+    <!-- 作者 -->
+    <meta name="revised" content="李幸阜"/>
+    <!-- 定义页面的最新版本 -->
+    <meta name="description" content="智能政务系统"/>
+    <!-- 网站简介 -->
+    <meta name="keywords" content="智能政务系统"/>
+    <title>智能政务系统</title>
+    <link href="css/css.css" rel="stylesheet"/>
+    <link href="css/app.158927d2966ac2f157d8093f899ab95b.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="./css/iconfont2.css">
+    <link rel="stylesheet" href="./css/iconfont.css">
+    <!--    <link href="/static/css/boot.css" rel="stylesheet">-->
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="js/js.js"></script>
+    <script type="text/javascript" src="layui/layui.js"></script>
+</head>
+
+<body style="background:url(images/bodybg.png);">
+<div style="width:100%;height:180px"></div>
+<div class="nav">
+    <ul>
+        <li><a></a></li>
+        <li class=""><a href="">网站首页</a></li>
+        <li><a href="userHTML/addMessage.html">留 言</a></li>
+        <li><a href="userHTML/userMessages.html">我的留言</a></li>
+        <li><a href="userHTML/dataCountForm.html">数据统计</a></li>
+        <li><a href="login.html" id="login">登录</a></li>
+        <li><a href="userHTML/register.html" id="register">注册</a></li>
+        <li><a></a></li>
+        <div class="clears"></div>
+    </ul>
+</div><!--nav/-->
+
+<div class="cont">
+    <section class="webdesigntuts-workshop">
+        <form class="layui-form" action="/EGov/messages/MoHuSearch" method="get">
+            <input name="t" required lay-verify="t" placeholder="您想搜索什么?">
+            <button>搜索</button>
+        </form>
+        <script>
+            layui.use('form', function () {
+                var form = layui.form;
+                form.verify({
+                    t: function (value, item) { //value：表单的值、item：表单的DOM对象
+                        if (value == null || value == "") {
+                            return '请填写此字段';
+                        }
+                    },
+                });
+            });
+        </script>
+    </section>
+    <div class="new1Box">
+        <div class="new1Left">
+            <div class="box-card2">
+                <a href="userHTML/addMessage.html"><i class="iconfont icon-qianbi on box-card2-text"
+                                                      style="margin-top:15px">
+                    <span>我要留言</span>
+                </i></a>
+                <a href="userHTML/ListMessages.html"><i class="iconfont icon-chaxun box-card2-text"
+                                                        style="margin-top:30px">
+                    <span>我要查询</span>
+                </i></a>
+                <a href="https://www.wuhan.gov.cn/"><i class="iconfont icon-huojian box-card2-text"
+                                                         style="margin-top:30px">
+                    <span>A市政府</span>
+                </i></a>
+            </div>
+            <div class="time">
+                <span id="showTime"></span>
+            </div>
+        </div><!--new1Left/-->
+        <div class="new1Mid">
+            <ul class="new1Title">
+                <li>实时信息</li>
+                <li>正在办理</li>
+                <li>已解决</li>
+                <div class="clears"></div>
+            </ul><!--new1Title/-->
+            <div class="new1New">
+                <table class="newBox" id="solveMesList">
+                    <tr class="newTitle">
+                        <td>
+                            <div><a href="javascript:void(0)">测试标题1 </a> <span>2020-04-22</span></div>
+                        </td>
+                    </tr><!--newList/-->
+                    <tr class="newList">
+                        <td>
+                            根据工信部、上海市政府发布的文件，外资企业在上海自贸区经营增值电信业务的试点即将开始，这意味着继虚拟运营商之后，外资企业也终于有机会正式进入中国通信市场，不过外资只能经营增值电信业务，且增值电信业务已是的业务
+                        </td>
+                    </tr>
+                    <tr class="newTitle">
+                        <td>
+                            <div><a>测试标题2 </a> <span>2022-04-22</span></div>
+                        </td>
+                    </tr><!--newList/-->
+                    <tr class="newList">
+                        <td>
+                            根据工信部、上海市政府发布的文件，外资企业在上海自贸区经营增值电信业务的试点即将开始，这意味着继虚拟运营商之后，外资企业也终于有机会正式进入中国通信市场，不过外资只能经营增值电信业务，且增值电信业务已是的业务
+                        </td>
+                    </tr>
+                    <tr class="newTitle">
+                        <td>
+                            <div><a>测试标题3...</a> <span>2022-04-22</span></div>
+                        </td>
+                    </tr><!--newList/-->
+                    <tr class="newList">
+                        <td>
+                            根据工信部、上海市政府发布的文件，外资企业在上海自贸区经营增值电信业务的试点即将开始，这意味着继虚拟运营商之后，外资企业也终于有机会正式进入中国通信市场，不过外资只能经营增值电信业务，且增值电信业务已是的业务
+                        </td>
+                    </tr>
+                    <tr class="newTitle">
+                        <td>
+                            <div><a>测试标题4 </a> <span>2022-04-22</span></div>
+                        </td>
+                    </tr><!--newList/-->
+                    <tr class="newList">
+                        <td>
+                            根据工信部、上海市政府发布的文件，外资企业在上海自贸区经营增值电信业务的试点即将开始，这意味着继虚拟运营商之后，外资企业也终于有机会正式进入中国通信市场，不过外资只能经营增值电信业务，且增值电信业务已是的业务
+                        </td>
+                    </tr>
+                    <tr class="newTitle">
+                        <td>
+                            <div><a>测试标题5</a> <span>2022-04-22</span></div>
+                        </td>
+                    </tr><!--newList/-->
+                    <tr class="newList">
+                        <td>
+                            根据工信部、上海市政府发布的文件，外资企业在上海自贸区经营增值电信业务的试点即将开始，这意味着继虚拟运营商之后，外资企业也终于有机会正式进入中国通信市场，不过外资只能经营增值电信业务，且增值电信业务已是的业务
+                        </td>
+                    </tr>
+
+                </table><!--newBox/-->
+            </div><!--new1New/-->
+            <div class="new1New">
+                <table class="newBox" id="solvingMesList">
+                    <tr class="newTitle">
+                        <td>
+                            <div><a>测试标题1 </a> <span>2022-04-22</span></div>
+                        </td>
+                    </tr><!--newList/-->
+                    <tr class="newList">
+                        <td>
+                            根据工信部、上海市政府发布的文件，外资企业在上海自贸区经营增值电信业务的试点即将开始，这意味着继虚拟运营商之后，外资企业也终于有机会正式进入中国通信市场，不过外资只能经营增值电信业务，且增值电信业务已是的业务
+                        </td>
+                    </tr>
+                    <tr class="newTitle">
+                        <td>
+                            <div><a>测试标题2</a> <span>2022-04-22</span></div>
+                        </td>
+                    </tr><!--newList/-->
+                    <tr class="newList">
+                        <td>
+                            根据工信部、上海市政府发布的文件，外资企业在上海自贸区经营增值电信业务的试点即将开始，这意味着继虚拟运营商之后，外资企业也终于有机会正式进入中国通信市场，不过外资只能经营增值电信业务，且增值电信业务已是的业务
+                        </td>
+                    </tr>
+                    <tr class="newTitle">
+                        <td>
+                            <div><a>测试标题3</a> <span>2022-04-22</span></div>
+                        </td>
+                    </tr><!--newList/-->
+                    <tr class="newList">
+                        <td>
+                            根据工信部、上海市政府发布的文件，外资企业在上海自贸区经营增值电信业务的试点即将开始，这意味着继虚拟运营商之后，外资企业也终于有机会正式进入中国通信市场，不过外资只能经营增值电信业务，且增值电信业务已是的业务
+                        </td>
+                    </tr>
+                    <tr class="newTitle">
+                        <td>
+                            <div><a>测试标题4</a> <span>2022-04-22</span></div>
+                        </td>
+                    </tr><!--newList/-->
+                    <tr class="newList">
+                        <td>
+                            根据工信部、上海市政府发布的文件，外资企业在上海自贸区经营增值电信业务的试点即将开始，这意味着继虚拟运营商之后，外资企业也终于有机会正式进入中国通信市场，不过外资只能经营增值电信业务，且增值电信业务已是的业务
+                        </td>
+                    </tr>
+                    <tr class="newTitle">
+                        <td>
+                            <div><a>测试标题5</a> <span>2022-04-22</span></div>
+                        </td>
+                    </tr><!--newList/-->
+                    <tr class="newList">
+                        <td>
+                            根据工信部、上海市政府发布的文件，外资企业在上海自贸区经营增值电信业务的试点即将开始，这意味着继虚拟运营商之后，外资企业也终于有机会正式进入中国通信市场，不过外资只能经营增值电信业务，且增值电信业务已是的业务
+                        </td>
+                    </tr>
+                </table><!--newBox/-->
+            </div><!--new1New/-->
+            <div class="new1New">
+                <table class="newBox" id="solvedMesList">
+                    <tr class="newTitle">
+                        <td>
+                            <div><a>测试标题1 </a> <span>2022-04-22</span></div>
+                        </td>
+                    </tr><!--newList/-->
+                    <tr class="newList">
+                        <td>
+                            根据工信部、上海市政府发布的文件，外资企业在上海自贸区经营增值电信业务的试点即将开始，这意味着继虚拟运营商之后，外资企业也终于有机会正式进入中国通信市场，不过外资只能经营增值电信业务，且增值电信业务已是的业务
+                        </td>
+                    </tr>
+                    <tr class="newTitle">
+                        <td>
+                            <div><a>测试标题2 </a> <span>2022-04-22</span></div>
+                        </td>
+                    </tr><!--newList/-->
+                    <tr class="newList">
+                        <td>
+                            根据工信部、上海市政府发布的文件，外资企业在上海自贸区经营增值电信业务的试点即将开始，这意味着继虚拟运营商之后，外资企业也终于有机会正式进入中国通信市场，不过外资只能经营增值电信业务，且增值电信业务已是的业务
+                        </td>
+                    </tr>
+                    <tr class="newTitle">
+                        <td>
+                            <div><a>测试标题3 </a> <span>2022-04-22</span></div>
+                        </td>
+                    </tr><!--newList/-->
+                    <tr class="newList">
+                        <td>
+                            根据工信部、上海市政府发布的文件，外资企业在上海自贸区经营增值电信业务的试点即将开始，这意味着继虚拟运营商之后，外资企业也终于有机会正式进入中国通信市场，不过外资只能经营增值电信业务，且增值电信业务已是的业务
+                        </td>
+                    </tr>
+                    <tr class="newTitle">
+                        <td>
+                            <div><a>测试标题4 </a> <span>2022-04-22</span></div>
+                        </td>
+                    </tr><!--newList/-->
+                    <tr class="newList">
+                        <td>
+                            根据工信部、上海市政府发布的文件，外资企业在上海自贸区经营增值电信业务的试点即将开始，这意味着继虚拟运营商之后，外资企业也终于有机会正式进入中国通信市场，不过外资只能经营增值电信业务，且增值电信业务已是的业务
+                        </td>
+                    </tr>
+                    <tr class="newTitle">
+                        <td>
+                            <div><a>测试标题5 </a> <span>2022-04-22</span></div>
+                        </td>
+                    </tr><!--newList/-->
+                    <tr class="newList">
+                        <td>
+                            根据工信部、上海市政府发布的文件，外资企业在上海自贸区经营增值电信业务的试点即将开始，这意味着继虚拟运营商之后，外资企业也终于有机会正式进入中国通信市场，不过外资只能经营增值电信业务，且增值电信业务已是的业务
+                        </td>
+                    </tr>
+                </table><!--newBox/-->
+            </div><!--new1New/-->
+        </div><!--new1Mid/-->
+        <div class="new1Right">
+            <h1 class="new1Title2"><span>热点信息</span></h1>
+            <ul id="hotTopicList">
+                <li><a href="">热点</a></li>
+                <li><a href="">热点</a></li>
+                <li><a href="">热点</a></li>
+                <li><a href="">热点</a></li>
+                <li><a href="">热点</a></li>
+            </ul>
+        </div><!--new1Right/-->
+        <div class="clears"></div>
+    </div><!--new1Box/-->
+
+    <div data-v-0faae8fa="" class="msgInfo">
+        <div data-v-0faae8fa="" style="margin-left: -5px; margin-right: -5px;">
+            <div data-v-0faae8fa=""
+                 class="item_col el-col el-col-24 el-col-xs-12 el-col-sm-12 el-col-md-6 el-col-lg-6"
+                 style="padding-left: 5px; padding-right: 5px; margin-bottom: 10px;">
+                <div data-v-0faae8fa="" class="el-card box-card is-always-shadow">
+                    <div data-v-0faae8fa="" class="el-card__header">
+                        <div data-v-0faae8fa="" class="clearfix">
+                            <span data-v-0faae8fa="" title="A区" class="namelist">A区</span>
+                        </div>
+                    </div>
+                    <div data-v-0faae8fa="" class="el-card__body" style="font-size:16px;">
+                        <div data-v-0faae8fa="" class="item">
+                            年度合计留言量: <i id="AArea" style="color:red">24816</i> 条
+                        </div>
+                        <div data-v-0faae8fa="" class="item">
+                            年度评估热度值: <i id="AAreaR" style="color:red">9602</i> 条
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div data-v-0faae8fa="" style="margin-left: -5px; margin-right: -5px;">
+            <div data-v-0faae8fa=""
+                 class="item_col el-col el-col-24 el-col-xs-12 el-col-sm-12 el-col-md-6 el-col-lg-6"
+                 style="padding-left: 5px; padding-right: 5px; margin-bottom: 10px;">
+                <div data-v-0faae8fa="" class="el-card box-card is-always-shadow">
+                    <div data-v-0faae8fa="" class="el-card__header">
+                        <div data-v-0faae8fa="" class="clearfix">
+                            <span data-v-0faae8fa="" title="B区" class="namelist">B区</span>
+                        </div>
+                    </div>
+                    <div data-v-0faae8fa="" class="el-card__body" style="font-size:16px;">
+                        <div data-v-0faae8fa="" class="item">
+                            年度合计留言量: <i id="BArea" style="color:red">24816</i> 条
+                        </div>
+                        <div data-v-0faae8fa="" class="item">
+                            年度评估热度值: <i id="BAreaR" style="color:red">9602</i> 条
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div data-v-0faae8fa="" style="margin-left: -5px; margin-right: -5px;">
+            <div data-v-0faae8fa=""
+                 class="item_col el-col el-col-24 el-col-xs-12 el-col-sm-12 el-col-md-6 el-col-lg-6"
+                 style="padding-left: 5px; padding-right: 5px; margin-bottom: 10px;">
+                <div data-v-0faae8fa="" class="el-card box-card is-always-shadow">
+                    <div data-v-0faae8fa="" class="el-card__header">
+                        <div data-v-0faae8fa="" class="clearfix">
+                            <span data-v-0faae8fa="" title="C区" class="namelist">C区</span>
+                        </div>
+                    </div>
+                    <div data-v-0faae8fa="" class="el-card__body" style="font-size:16px;">
+                        <div data-v-0faae8fa="" class="item">
+                            年度合计留言量: <i id="CArea" style="color:red">24816</i> 条
+                        </div>
+                        <div data-v-0faae8fa="" class="item">
+                            年度评估热度值: <i id="CAreaR" style="color:red">9602</i> 条
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div data-v-0faae8fa="" style="margin-left: -5px; margin-right: -5px;">
+            <div data-v-0faae8fa=""
+                 class="item_col el-col el-col-24 el-col-xs-12 el-col-sm-12 el-col-md-6 el-col-lg-6"
+                 style="padding-left: 5px; padding-right: 5px; margin-bottom: 10px;">
+                <div data-v-0faae8fa="" class="el-card box-card is-always-shadow">
+                    <div data-v-0faae8fa="" class="el-card__header">
+                        <div data-v-0faae8fa="" class="clearfix">
+                            <span data-v-0faae8fa="" title="D区" class="namelist">D区</span>
+                        </div>
+                    </div>
+                    <div data-v-0faae8fa="" class="el-card__body" style="font-size:16px;">
+                        <div data-v-0faae8fa="" class="item">
+                            年度合计留言量: <i id="DArea" style="color:red">24816</i> 条
+                        </div>
+                        <div data-v-0faae8fa="" class="item">
+                            年度评估热度值: <i id="DAreaR" style="color:red">9602</i> 条
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div><!--footer/-->
+
+<div class="footer">
+    <div class="footBottom">
+        <p>Copyright 2022 湖北省武汉市政府,All right Reserved 版权所有</p>
+        <p>未经本网书面授权，请勿转载、摘编或建立镜像，负责视为侵权。 </p>
+        <p>沪ICP备0000000号 技术支持：<a href="" target="_blank">xxxx</a></p>
+    </div><!--footBottom/-->
+</div><!--footer/-->
+<script>
+    window.onload = function () {
+        //setInterval，定时调用某个方法，第一个参数："方法名()"，第二个参数为毫秒数。
+        window.setInterval("getTime()", 1000);
+        setUserName();
+        freshDate();
+        freshHotTopic();
+        freshTopic();
+    };
+
+    function getTime() {
+        //获取日期类对象
+        var date = new Date;
+        //利用get方法获取当前年、月、日、时、分、秒等信息，并拼接在一起。
+        //注意：这里的date.getMonth()得到的月份数是从0开始的，所以要+1。
+        var time = date.getFullYear() + "年" +
+            (date.getMonth() + 1) + "月" +
+            date.getDay() + "日" + " " +
+            date.getHours() + "时" +
+            date.getMinutes() + "分" +
+            date.getSeconds() + "秒";
+        //根据ID获取对应的span标签类对象
+        var showTimeSpan = document.getElementById("showTime");
+        //innerHTML
+        //语法：HTMLElementObject.innerHTML = text
+        //作用：改变同一行的一对HTML标签中的值
+        showTimeSpan.innerHTML = time;
+    }
+
+    function delCookie() {
+        $.removeCookie("userId", {domain: 'localhost', path: '/EGov'});
+        $.removeCookie("userName", {domain: 'localhost', path: '/EGov'});
+        $.removeCookie("userPhone", {domain: 'localhost', path: '/EGov'});
+        $.removeCookie("userPassword", {domain: 'localhost', path: '/EGov'});
+        $.removeCookie("userFlag", {domain: 'localhost', path: '/EGov'});
+        $.removeCookie("userSex", {domain: 'localhost', path: '/EGov'});
+        $.removeCookie("userState", {domain: 'localhost', path: '/EGov'});
+        $.removeCookie("userSection", {domain: 'localhost', path: '/EGov'});
+    }
+
+    function setUserName() {
+        var userName = $.cookie('userName');
+        if (userName != null) {
+            var login = document.getElementById('login');
+            login.innerText = '欢迎' + userName;
+            login.href = 'userHTML/userInfo.html';
+            var register = document.getElementById('register');
+            register.innerHTML = '退出登录';
+            register.href = "index2.html";
+            register.onclick = delCookie;
+        }
+    }
+
+    function freshDate(){
+        $.ajax({
+            type: "GET",
+            url: "/EGov/redisDate/getCache",//对应controller的URL
+            async: true,
+            data: {},
+            success: function (data) {
+                document.getElementById("AArea").innerText=data.AMessageCount;
+                document.getElementById("BArea").innerText=data.BMessageCount;
+                document.getElementById("CArea").innerText=data.CMessageCount;
+                document.getElementById("DArea").innerText=data.DMessageCount;
+                document.getElementById("AAreaR").innerText=(data.AMessageCount/data.messageCount*100).toFixed(2);
+                document.getElementById("BAreaR").innerText=(data.BMessageCount/data.messageCount*100).toFixed(2);
+                document.getElementById("CAreaR").innerText=(data.CMessageCount/data.messageCount*100).toFixed(2);
+                document.getElementById("DAreaR").innerText=(data.DMessageCount/data.messageCount*100).toFixed(2);
+            }
+        });
+    }
+
+    function freshHotTopic() {
+        $.ajax({
+            type: "GET",
+            url: "/EGov/redisDate/getIndex",//对应controller的URL
+            async: true,
+            data: {},
+            success: function (data) {
+                hotTopic = data.hotTopic;
+                var html = '';
+                for (var i = 0; i < hotTopic.length; i++) {
+                    html += '<li>';
+                    html += '<a href="/EGov/messages/visitMessage?m_id=' + hotTopic[i].m_id + '">';
+                    html += hotTopic[i].topic;
+                    html += '</a></li>';
+                }
+                // console.log(html)
+                $("#hotTopicList").empty().append(html);
+            }
+        });
+    }
+
+    function freshTopic() {
+        $.ajax({
+            type: "GET",
+            url: "/EGov/redisDate/getIndex",//对应controller的URL
+            async: true,
+            data: {},
+            success: function (data) {
+                var solveMes = data.solveMes;
+                var solvingMes = data.solvingMes;
+                var solvedMes = data.solvedMes;
+                var html = '';
+                for (var i = 0; i < solveMes.length; i++) {
+                    html += '<tr class="newTitle"><td><div><a href="/EGov/messages/visitMessage?m_id=' + solveMes[i].m_id + '">';
+                    html += solveMes[i].topic.substr(0, 24) + '</a> <span>';
+                    html += solveMes[i].time.substr(0, 11) + '</span></div>';
+                    html += '</td></tr><tr class="newList"><td>';
+                    html += solveMes[i].context.substr(0, 105);
+                    html += '</td></tr>';
+                }
+                $("#solveMesList").empty().append(html);
+
+                html = '';
+                for (i = 0; i < solvingMes.length; i++) {
+                    html += '<tr class="newTitle"><td><div><a href="/EGov/messages/visitMessage?m_id=' + solvingMes[i].m_id + '">';
+                    html += solvingMes[i].topic.substr(0, 24) + '</a> <span>';
+                    html += solvingMes[i].time.substr(0, 11) + '</span></div>';
+                    html += '</td></tr><tr class="newList"><td>';
+                    html += solvingMes[i].context.substr(0, 105);
+                    html += '</td></tr>';
+                }
+                $("#solvingMesList").empty().append(html);
+
+                html = '';
+                for (i = 0; i < solvedMes.length; i++) {
+                    html += '<tr class="newTitle"><td><div><a href="/EGov/messages/visitMessage?m_id=' + solvedMes[i].m_id + '">';
+                    html += solvedMes[i].topic.substr(0, 24) + '</a> <span>';
+                    html += solvedMes[i].time.substr(0, 11) + '</span></div>';
+                    html += '</td></tr><tr class="newList"><td>';
+                    html += solvedMes[i].context.substr(0, 105);
+                    html += '</td></tr>';
+                }
+                $("#solvedMesList").empty().append(html);
+            }
+        });
+    }
+
+</script>
+</body>
+</html>
+

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/development_management.iml" filepath="$PROJECT_DIR$/.idea/development_management.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dm-content/dm-content-api/dm-content-api.iml" filepath="$PROJECT_DIR$/dm-content/dm-content-api/dm-content-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dm-system/dm-system-api/dm-system-api.iml" filepath="$PROJECT_DIR$/dm-system/dm-system-api/dm-system-api.iml" />
+    </modules>
+  </component>
+</project>

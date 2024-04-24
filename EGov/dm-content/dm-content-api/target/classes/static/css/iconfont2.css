@@ -1,0 +1,20 @@
+
+@font-face {font-family: "iconfont";
+  src: url('../fonts/iconfont.eot?t=1647260397388'); /* IE9*/
+  src: url('../fonts/iconfont.woff2?t=1647260397388') format('woff2'),
+  url('../fonts/iconfont.woff?t=1647260397388') format('woff'), /* chrome、firefox */
+  url('../fonts/iconfont.ttf?t=1647260397388') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('../fonts/iconfont.svg?t=1647260397388#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont {
+  font-family:"iconfont" !important;
+  font-size:16px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-chaxun:before { content: "\e62e"; }
+
+.icon-qianbi:before { content: "\e61b"; }

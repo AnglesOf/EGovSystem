@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <!-- Google Chrome Frame也可以让IE用上Chrome的引擎: -->
+    <meta name="renderer" content="webkit">
+    <!--国产浏览器高速模式-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="李幸阜"/>
+    <!-- 作者 -->
+    <meta name="revised" content="李幸阜"/>
+    <!-- 定义页面的最新版本 -->
+    <meta name="description" content="网站首页"/>
+    <!-- 网站简介 -->
+    <meta name="keywords" content="搜索关键字，以半角英文逗号隔开"/>
+    <title>李幸阜开发</title>
+
+    <!-- 公共样式 开始 -->
+    <link href="../css/base.css" rel="stylesheet" type="text/css">
+    <link href="../layui/css/layui.css" rel="stylesheet" type="text/css">
+    <link href="../css/css.css" rel="stylesheet"/>
+    <link href="../css/app.158927d2966ac2f157d8093f899ab95b.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../css/iconfont2.css">
+    <link rel="stylesheet" type="text/css" href="../css/reportForm.css">
+    <script type="text/javascript" src="../layui/layui.js"></script>
+    <script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="../js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../js/js.js"></script>
+    <!-- 滚动条插件 -->
+    <link rel="stylesheet" type="text/css" href="../css/jquery.mCustomScrollbar.css">
+    <!-- 绘图插件 -->
+    <script src="../framework/echarts.min.js"></script>
+    <!-- 公共样式 结束 -->
+</head>
+
+<body style="background:url(../images/bodybg.png);">
+<div style="width:100%;height:180px"></div>
+<div class="nav">
+    <ul>
+        <li><a></a></li>
+        <li><a href="../index2.html">网站首页</a></li>
+        <li><a href="./addMessage.html">留 言</a></li>
+        <li><a href="./userMessages.html">我的留言</a></li>
+        <li><a href="./dataCountForm.html">数据统计</a></li>
+        <li><a href="../login.html" id="login">登录</a></li>
+        <li><a href="./register.html" id="register">注册</a></li>
+        <li><a></a></li>
+        <div class="clears"></div>
+    </ul>
+</div><!--nav/-->
+
+<div class="cont">
+    <div class="console">
+        <div class="layui-form-item">
+            <div class="reportForm" style="width: 100%;">
+                <a class="typeBut bl" href="./dataCountForm.html">留言</a>
+                <a class="typeBut" href="./bqForm.html">各标签留言</a>
+                <a class="typeBut active" href="./areaForm.html">各地区留言</a>
+                <a class="typeBut" href="./ListHotMessages.html">热点留言</a>
+                <a class="typeBut br" href="./cyForm.html">词云</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="reportForm_main">
+        <div class="collectData">
+            <div class="layui-row">
+                <div class="layui-col-md3 br">
+                    <div class="layui-col-md6">
+                        <div class="title">访问人数</div>
+                        <div class="nums"><font id="visitCount">0</font><span>人</span></div>
+                    </div>
+                </div>
+                <div class="layui-col-md3 br">
+                    <div class="layui-col-md6">
+                        <div class="title">留言总数量</div>
+                        <div class="nums"><font id="messageCount">0</font></div>
+                    </div>
+                    <div class="layui-col-md6">
+                        <div class="title">用户总数量</div>
+                        <div class="nums"><font id="userCount">0</font></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="reportType_tj">
+            <form class="layui-form" action="">
+                <div class="layui-input-inline">
+                    <select name="reportType" id="reportType" lay-filter="reportType">
+                        <option value="留言数量折线图">留言数量折线图</option>
+                        <option value="各标签留言分布柱状图">各标签留言分布柱状图</option>
+                        <option value="各区域留言" selected>各区域留言</option>
+                        <option value="热点留言">热点留言</option>
+                    </select>
+                </div>
+                <div class="layui-input-inline">
+                    <a class="pressBut">【按月】</a>
+                </div>
+                <div class="changeRate">
+                    <div class="layui-col-md6 left">100</div>
+                    <div class="layui-col-md6 right">
+                        <span class="data up">-99.42%<i class="iconfont icon-xiangshangjiantoucuxiao"></i></span>
+                        <span class="text">相比上月</span>
+                    </div>
+                </div>
+                <div id="myReport" style="width: 100%; height: 400px;top:30px;"></div>
+            </form>
+
+            <script type="text/javascript">
+                // 基于准备好的dom，初始化echarts实例
+                var myChart = echarts.init(document.getElementById('myReport'));
+
+                // 指定图表的配置项和数据
+                option = {
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b}: {c} ({d}%)",
+                    },//提示框，鼠标悬浮交互时的信息提示
+                    legend: {
+                        show: false,
+                        orient: 'vertical',
+                        x: 'left',
+                    },//图例属性，以饼状图为例，用来说明饼状图每个扇区，data与下边series中data相匹配
+                    graphic: {
+                        type: 'text',
+                        left: 'center',
+                        top: 'center',
+                        style: {
+                            text: '区域统计\n' + '100%', //使用“+”可以使每行文字居中
+                            textAlign: 'center',
+                            font: 'italic bolder 16px cursive',
+                            fill: '#000',
+                            width: 30,
+                            height: 30
+                        }
+                    },//此例饼状图为圆环中心文字显示属性，这是一个原生图形元素组件，功能很多
+                    series: [
+                        {
+                            name: '区域统计',//tooltip提示框中显示内容
+                            type: 'pie',//图形类型，如饼状图，柱状图等
+                            radius: ['50%', '100%'],//饼图的半径，数组的第一项是内半径，第二项是外半径。支持百分比，本例设置成环形图。具体可以看文档或改变其值试一试
+                            //roseType:'area',是否显示成南丁格尔图，默认false
+                            itemStyle: {
+                                normal: {
+                                    label: {
+                                        show: true,
+                                        textStyle: {color: '#3c4858', fontSize: "18"},
+                                        formatter: function (val) {   //让series 中的文字进行换行
+                                            return val.name.split("-").join("\n");
+                                        }
+                                    },//饼图图形上的文本标签，可用于说明图形的一些数据信息，比如值，名称等。可以与itemStyle属性同级，具体看文档
+                                    labelLine: {
+                                        show: true,
+                                        lineStyle: {color: '#3c4858'}
+                                    }//线条颜色
+                                },//基本样式
+                                emphasis: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)',//鼠标放在区域边框颜色
+                                    textColor: '#000'
+                                }//鼠标放在各个区域的样式
+                            },
+                            data: [
+                                {value: 50, name: 'A区'},
+                                {value: 75, name: 'B区'},
+                                {value: 100, name: 'C区'},
+                                {value: 25, name: 'D区'},
+                            ],//数据，数据中其他属性，查阅文档
+                            color: ['#51CEC6', '#FFB703', '#5FA0FA', '#fa68bc'],//各个区域颜色
+                        },//数组中一个{}元素，一个图，以此可以做出环形图
+                    ],//系列列表
+                };
+                myChart.setOption(option);
+
+            </script>
+        </div>
+    </div>
+    <!-- layUI 分页模块 -->
+</div>
+</body>
+<script>
+    window.onload = function () {
+        setUserName();
+    };
+    var cache = null;
+    $.ajax({
+        type: "get",
+        url: "/EGov/redisDate/getCache",
+        async: false,
+        success: function (data) {
+            cache = data;
+            document.getElementById("visitCount").innerText = data.visitCount;
+            document.getElementById("messageCount").innerText = data.messageCount;
+            document.getElementById("userCount").innerText = data.userCount;
+            //更新数据
+            var myChart = echarts.init(document.getElementById('myReport'));
+            var option = myChart.getOption();
+            option.series[0].data[0].value = data.AMessageCount;
+            option.series[0].data[1].value = data.BMessageCount;
+            option.series[0].data[2].value = data.CMessageCount;
+            option.series[0].data[3].value = data.DMessageCount;
+            myChart.setOption(option);
+        }
+    });
+
+    function delCookie() {
+        $.removeCookie("userId", {domain: 'localhost', path: '/EGov'});
+        $.removeCookie("userName", {domain: 'localhost', path: '/EGov'});
+        $.removeCookie("userPhone", {domain: 'localhost', path: '/EGov'});
+        $.removeCookie("userPassword", {domain: 'localhost', path: '/EGov'});
+        $.removeCookie("userFlag", {domain: 'localhost', path: '/EGov'});
+        $.removeCookie("userSex", {domain: 'localhost', path: '/EGov'});
+        $.removeCookie("userState", {domain: 'localhost', path: '/EGov'});
+        $.removeCookie("userSection", {domain: 'localhost', path: '/EGov'});
+    }
+
+    function setUserName() {
+        var userName = $.cookie('userName');
+        if (userName != null) {
+            var login = document.getElementById('login');
+            login.innerText = '欢迎' + userName;
+            login.href = '/EGov/userHTML/userInfo.html';
+            var register = document.getElementById('register');
+            register.innerHTML = '退出登录';
+            register.href = "/EGov/index2.html";
+            register.onclick = delCookie;
+        }
+    }
+</script>
+
+</html>

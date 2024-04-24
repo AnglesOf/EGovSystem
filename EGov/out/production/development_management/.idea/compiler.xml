@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Annotation profile for dm-base" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.8/lombok-1.18.8.jar" />
+        </processorPath>
+        <module name="dm-content-api" />
+        <module name="dm-system-service" />
+        <module name="dm-system-model" />
+        <module name="dm-base" />
+        <module name="dm-content-model" />
+        <module name="dm-system-api" />
+        <module name="dm-content-service" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>

@@ -1,0 +1,18 @@
+### 查询标签
+GET {{content_host}}/EGov/bq/findBq
+
+### 获取热点信息
+GET {{content_host}}/EGov/redisDate/getIndex
+
+### 查看留言
+GET {{content_host}}/EGov/messages/visitMessage?m_id=2458
+
+
+### 登录
+POST {{content_host}}/EGov/user/loginUser
+Content-Type: application/json
+
+{
+"phone": 999,
+"password": "content"
+}

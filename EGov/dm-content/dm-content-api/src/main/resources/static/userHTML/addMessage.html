@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>智能政务系统</title>
+    <link href="../css/css.css" rel="stylesheet"/>
+    <link href="../css/app.158927d2966ac2f157d8093f899ab95b.css" rel="stylesheet"/>
+    <script type="text/javascript" src="../js/jquery.js"></script>
+<!--    <script type="text/javascript" src="../layui/layui.js"></script>-->
+    <script type="text/javascript" src="../js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../js/js.js"></script>
+</head>
+
+<body style="background:url(../images/bodybg.png);">
+<div style="width:100%;height:180px"></div>
+<div class="nav">
+    <ul>
+        <li><a></a></li>
+        <li><a href="../index2.html">网站首页</a></li>
+        <li><a href="./addMessage.html">留   言</a></li>
+        <li><a href="./userMessages.html">我的留言</a></li>
+        <li><a href="./dataCountForm.html">数据统计</a></li>
+        <li><a href="../login.html" id="login">登录</a></li>
+        <li><a href="./register.html" id="register">注册</a></li>
+        <li><a></a></li>
+        <div class="clears"></div>
+    </ul>
+</div><!--nav/-->
+
+<div class="cont">
+    <div style="display: block;/* text-align: center; */position: relative;left: 25%;margin-top: 3%;;margin-bottom:12%">
+        <form action="/EGov/messages/addMessages" method="get">
+            <div style="display: flex;margin-top: 20px;">
+                <div class="infoText">
+                    <label class="mPText" style="width: 42px;text-align: left;">标题</label>
+                </div>
+                <div class="infoInput">
+                    <label for="i1">
+                        <input type="text" id="i1" name="topic" style="width:430px;margin-top:4px" value="">
+                    </label>
+                </div>
+            </div>
+
+            <div style="display: flex;margin-top: 20px;">
+                <div class="infoText"><label class="mPText" style="width: 42px;text-align: left;">正文</label></div>
+                <div class="infoInput">
+                    <label for="i2">
+                        <textarea autoFocus type="text" id="i2" name="context" style="margin-top:5px"></textarea>
+                    </label>
+                </div>
+            </div>
+
+            <div style="display: flex;margin-top: 20px;">
+                <div class="infoText" style="margin-top:2px;"><label class="mPText" style="text-align: left;width:42px">区域</label></div>
+                <div class="infoSel">
+                    <label for="i3">
+                        <select name="area" id="i3" style="text-align: center;font-size:15px;margin-top:6px">
+                            <option value="null" selected style="text-align: center;font-size:15px">请选择</option>
+                            <option value="A" style="text-align: center;font-size:15px">A区</option>
+                            <option value="B" style="text-align: center;font-size:15px">B区</option>
+                            <option value="C" style="text-align: center;font-size:15px">C区</option>
+                            <option value="D" style="text-align: center;font-size:15px">D区</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+
+            <div style="display: flex;margin-top: 20px;text-align: center;">
+                <div><br><br></div>
+                <div class="" style="margin-left:18%;">
+                    <button class="infoButton" type="submit" onclick="return checkModify();">添加留言</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div><!--footer/-->
+
+<div class="footer">
+    <div class="footBottom">
+        <p>Copyright 2022 XX省XX市政府,All right Reserved 版权所有</p>
+        <p>未经本网书面授权，请勿转载、摘编或建立镜像，负责视为侵权。 </p>
+        <p>沪ICP备0000000号 技术支持：<a href="" target="_blank">xxxx</a></p>
+    </div><!--footBottom/-->
+</div><!--footer/-->
+<script>
+    window.onload = function () {
+        setUserName();
+    };
+    function checkModify() {
+        var topic = document.getElementById('i1');
+        var context = document.getElementById('i2');
+        var area = document.getElementById('i3');
+        var state = true;
+        if (topic.value==null || topic.value=="") {
+            alert("标题未填");
+            state = false;
+        }
+        if (context.value==null || context.value=="") {
+            alert("正文未填");
+            state = false;
+        }
+        if (selectItemByValue2(area)=='null') {
+            alert("区域未填");
+            state = false;
+        }
+        if (state !== false) {
+            alert("添加成功");
+        }
+        return state;
+    }
+
+    function selectItemByValue2(objSelect) {
+        for (var i = 0; i < objSelect.options.length; i++) {
+            if (objSelect.options[i].selected === true) {
+                return objSelect.options[i].value;
+            }
+        }
+    }
+
+    function delCookie(){
+        $.removeCookie("userId", {domain:'localhost',path:'/EGov'});
+        $.removeCookie("userName", {domain:'localhost',path:'/EGov'});
+        $.removeCookie("userPhone", {domain:'localhost',path:'/EGov'});
+        $.removeCookie("userPassword", {domain:'localhost',path:'/EGov'});
+        $.removeCookie("userFlag", {domain:'localhost',path:'/EGov'});
+        $.removeCookie("userSex", {domain:'localhost',path:'/EGov'});
+        $.removeCookie("userState", {domain:'localhost',path:'/EGov'});
+        $.removeCookie("userSection", {domain: 'localhost', path: '/EGov'});
+    }
+
+    function setUserName() {
+        var userName = $.cookie('userName');
+        if (userName != null) {
+            var login = document.getElementById('login');
+            login.innerText = '欢迎' + userName;
+            login.href = '/userHTML/userInfo.html';
+            var register = document.getElementById('register');
+            register.innerHTML = '退出登录';
+            register.href = "/EGov/index2.html";
+            register.onclick = delCookie;
+        }else {
+            window.location.href='/EGov/login.html';
+        }
+    }
+</script>
+</body>
+</html>

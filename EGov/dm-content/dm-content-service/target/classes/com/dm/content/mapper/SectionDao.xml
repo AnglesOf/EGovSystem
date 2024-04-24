@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dm.content.mapper.SectionDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dm.content.model.po.Section">
+        <id column="s_id" property="id" />
+        <result column="section" property="section" />
+        <result column="func" property="func" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        s_id, section, func
+    </sql>
+    <select id="selctFunc" resultType="String">
+        select func from t_section where section=#{section}
+    </select>
+
+</mapper>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.dm.content.mapper.GovUserDao">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dm.content.model.po.GovUser">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="phone" property="phone" />
+        <result column="password" property="password" />
+        <result column="flag" property="flag" />
+        <result column="sex" property="sex" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, phone, password, flag, sex
+    </sql>
+
+    <select id="selectGovUser" resultType="com.dm.content.model.po.GovUser">
+        select * from t_gov_user
+    </select>
+
+    <select id="selectGovUserById" resultType="com.dm.content.model.po.GovUser">
+        select * from t_gov_user where id=#{id}
+    </select>
+
+    <select id="selectGovUserByPhone" resultType="com.dm.content.model.po.GovUser">
+        select * from t_gov_user where phone=#{phone}
+    </select>
+
+    <insert id="insertGovUser">
+        insert into t_gov_user(id,name,phone,password,flag,sex) values(null,#{name},#{phone},#{password},#{flag},#{sex})
+    </insert>
+
+    <delete id="deleteGovUserById">
+        delete from t_gov_user where id=#{id}
+    </delete>
+
+    <delete id="deleteGovUserByPhone">
+        delete from t_gov_user where phone=#{phone}
+    </delete>
+
+    <update id="updateInfo">
+        update t_gov_user set name=#{name}, phone=#{phone}, sex=#{sex} where id=#{id}
+    </update>
+
+    <update id="updatePsw">
+        update t_gov_user set password=#{password} where id=#{id}
+    </update>
+
+    <select id="selectGovUserCounts" resultType="int">
+        select count(*) from t_gov_user
+    </select>
+</mapper>

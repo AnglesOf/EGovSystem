@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>智能政务系统</title>
+
+    <!-- 公共样式 开始 -->
+    <link rel="stylesheet" type="text/css" href="../css/base.css">
+    <link rel="stylesheet" type="text/css" href="../css/iconfont.css">
+    <link rel="stylesheet" type="text/css" href="../layui/css/layui.css">
+    <script type="text/javascript" src="../framework/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="../layui/layui.js"></script>
+    <!-- 滚动条插件 -->
+    <link rel="stylesheet" type="text/css" href="../css/jquery.mCustomScrollbar.css">
+    <script src="../framework/jquery-ui-1.10.4.min.js"></script>
+    <script src="../framework/jquery.mousewheel.min.js"></script>
+    <script src="../framework/jquery.mCustomScrollbar.min.js"></script>
+    <script src="../framework/cframe.js"></script><!-- 仅供所有子页面使用 -->
+    <!-- 公共样式 结束 -->
+
+    <style>
+        .layui-form {
+            margin-right: 30%;
+        }
+
+        .layui-form-label {
+            width: 100px;
+        }
+
+        .layui-input-block {
+            margin-left: 130px;
+        }
+    </style>
+</head>
+<body>
+<div class="cBody">
+    <div class="console">
+        <form class="layui-form" action="">
+            <div class="layui-form-item">
+                <div class="layui-input-inline">
+                    <label>
+                        <input type="text" name="phone" required placeholder="请输入用户电话" autocomplete="off"
+                               class="layui-input" required lay-verify="phone">
+                    </label>
+                </div>
+                <button class="layui-btn" lay-submit lay-filter="formDemo">检索</button>
+            </div>
+        </form>
+
+        <script>
+            layui.use('form', function () {
+                var form = layui.form;
+                form.verify({
+                    phone: function (value, item) { //value：表单的值、item：表单的DOM对象
+                        if (value == null || value == "") {
+                            return '请输入用户电话号码！';
+                        }
+                    },
+                });
+                //监听提交
+                form.on('submit(formDemo)', function (data) {
+                    $.ajax({
+                        type: 'get',
+                        //url: "{:url('messages/searchByMid')}",
+                        url: "/EGov/user/findUserByPhone",
+                        async: false,
+                        data: {"phone": data.field.phone,},
+                        success: function (res) {
+                            if (res == null || res == '') {
+                                layer.msg("没有该用户");
+                                return false;
+                            }
+                            var html = '';
+                            var s = '';
+                            html += '<tr>';
+                            html += '<td>' + res.id + '</td>';
+                            html += '<td>' + res.name + '</td>';
+                            html += '<td>' + res.phone + '</td>';
+                            html += '<td>' + res.sex + '</td>';
+                            s = res.state == 0 ? '正常' : '封禁';
+                            html += '<td>' + s + '</td>';
+                            s = res.state == 0 ? '封禁' : '解封';
+                            html += '<td><a><button class="layui-btn layui-btn-xs layui-btn-warm" onclick="clo(this,' + res.id + ');">' + s + '</button></a></td>';
+                            html += '<td><a href="/EGov/user/queryInfo?id=' + res.id + '"><button class="layui-btn layui-btn-xs layui-btn-normal">修改</button></a></td>';
+                            html += '<td><a href="/EGov/govUser/removeUser?id=' + res.id + '"><button class="layui-btn layui-btn-xs layui-btn-danger">删除</button></a></td>';
+                            html += '</tr>';
+                            // console.log(html)
+                            $("#userList").empty().append(html);
+                        }
+                    });
+                    return false;
+                });
+            });
+        </script>
+    </div>
+
+    <table class="layui-table">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>姓名</th>
+            <th>电话</th>
+            <th>性别</th>
+            <th>状态</th>
+            <th>操作</th>
+            <th>操作</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody id="userList">
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                <a href="">
+                    <button class="layui-btn layui-btn-xs layui-btn-warm">封禁</button>
+                </a>
+            </td>
+            <td>
+                <a href="">
+                    <button class="layui-btn layui-btn-xs layui-btn-normal">修改</button>
+                </a>
+            </td>
+            <td>
+                <a href="">
+                    <button class="layui-btn layui-btn-xs layui-btn-danger">删除</button>
+                </a>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+    <!-- layUI 分页模块 -->
+    <div id="pages"></div>
+    <script>
+        window.onload = function () {
+            loadData();  //请求数据
+            getPage();     //分页操作
+        };
+
+        function clo(t, id) {
+            $.ajax({
+                type: "GET",
+                url: "/EGov/govUser/modifyUserState",
+                data: {id: parseInt(id)},
+                async: false,
+                success: function (data) {
+                    if (parseInt(data.state) !== 0) {
+                        t.parentNode.parentNode.previousElementSibling.innerText='封禁';
+                        t.innerText = "解封";
+                    }else {
+                        t.parentNode.parentNode.previousElementSibling.innerText='正常';
+                        t.innerText = "封禁";
+                    }
+                }
+            });
+        }
+
+
+        var page = 0; //设置首页页码
+        var limit = 10;  //设置一页显示的条数
+        var total;    //总条数
+        var total2;
+
+        function loadData() {
+            $.ajax({
+                type: "GET",
+                url: "/EGov/user/findUserLimit",//对应controller的URL
+                async: false,
+                data: {
+                    "pageIndex": page,
+                    "pageSize": limit,
+                },
+                success: function (data) {
+                    total = data.length;  //设置总条数
+                    var html = '';
+                    var s = '';
+                    for (var i = 0; i < total; i++) {
+                        html += '<tr>';
+                        html += '<td>' + data[i].id + '</td>';
+                        html += '<td>' + data[i].name + '</td>';
+                        html += '<td>' + data[i].phone + '</td>';
+                        html += '<td>' + data[i].sex + '</td>';
+                        s = data[i].state==0?'正常':'封禁';
+                        html += '<td>' + s + '</td>';
+                        s = data[i].state == 0 ? '封禁' : '解封';
+                        html += '<td><a><button class="layui-btn layui-btn-xs layui-btn-warm" onclick="clo(this,' + data[i].id + ');">' + s + '</button></a></td>';
+                        html += '<td><a href="/EGov/user/queryInfo?id=' + data[i].id + '"><button class="layui-btn layui-btn-xs layui-btn-normal">修改</button></a></td>';
+                        html += '<td><a href="/EGov/govUser/removeUser?id=' + data[i].id + '"><button class="layui-btn layui-btn-xs layui-btn-danger">删除</button></a></td>';
+                        html += '</tr>';
+                    }
+                    // console.log(html)
+                    $("#userList").empty().append(html);
+                }
+            });
+        }
+
+        function getPage() {
+            $.ajax({
+                type: "get",
+                url: "/EGov/redisDate/getCache",
+                async: false,
+                success: function (data) {
+                    total2 = data.userCount;
+                }
+            });
+            layui.use(['laypage', 'layer'], function () {
+                var laypage = layui.laypage;
+
+                //执行一个laypage实例
+                laypage.render({
+                    elem: 'pages', //注意，这里的 test1 是 ID，不用加 # 号
+                    count: total2, //数据总数，从服务端得到
+                    limit: limit,   //每页条数设置
+                    layout: ['count', 'prev', 'page', 'next', 'skip'],
+                    jump: function (obj, first) {
+                        //obj包含了当前分页的所有参数，比如：
+                        page = (obj.curr - 1) * limit;  //改变当前页码
+                        //首次不执行
+                        if (!first) {
+                            loadData()  //加载数据
+                        }
+                    }
+                });
+            });
+        }
+    </script>
+</div>
+
+</body>
+</html>

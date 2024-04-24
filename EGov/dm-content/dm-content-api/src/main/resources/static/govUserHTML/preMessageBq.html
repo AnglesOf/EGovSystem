@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>智能政务系统</title>
+
+    <!-- 公共样式 开始 -->
+    <link rel="stylesheet" type="text/css" href="../css/base.css">
+    <link rel="stylesheet" type="text/css" href="../css/iconfont.css">
+    <link rel="stylesheet" type="text/css" href="../layui/css/layui.css">
+    <script type="text/javascript" src="../framework/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="../layui/layui.js"></script>
+    <!-- 滚动条插件 -->
+    <link rel="stylesheet" type="text/css" href="../css/jquery.mCustomScrollbar.css">
+    <script src="../framework/jquery-ui-1.10.4.min.js"></script>
+    <script src="../framework/jquery.mousewheel.min.js"></script>
+    <script src="../framework/jquery.mCustomScrollbar.min.js"></script>
+    <script src="../framework/cframe.js"></script><!-- 仅供所有子页面使用 -->
+    <!-- 公共样式 结束 -->
+
+    <style>
+        .layui-form {
+            margin-right: 30%;
+        }
+
+        .layui-form-label {
+            width: 100px;
+        }
+
+        .layui-input-block {
+            margin-left: 130px;
+        }
+    </style>
+</head>
+<body>
+<div class="cBody">
+    <div class="console">
+        <form class="layui-form" action="">
+            <div class="layui-form-item">
+                <div class="layui-input-inline">
+                    <label>
+                        <input type="text" name="text" required placeholder="请输入正文" autocomplete="off"
+                               class="layui-input" required lay-verify="phone">
+                    </label>
+                </div>
+                <button class="layui-btn" lay-submit lay-filter="formDemo">预测</button>
+            </div>
+        </form>
+
+        <script>
+            layui.use('form', function () {
+                var form = layui.form;
+                form.verify({
+                    phone: function (value, item) { //value：表单的值、item：表单的DOM对象
+                        if (value == null || value == "") {
+                            return '请输入正文';
+                        }
+                    },
+                });
+                //监听提交
+                form.on('submit(formDemo)', function (data) {
+                    $.ajax({
+                        type: 'get',
+                        //url: "{:url('messages/searchByMid')}",
+                        url: "http://127.0.0.1:8000/textClassifier/",
+                        async: false,
+                        data: {"text": data.field.text,},
+                        success: function (res) {
+                            if (res == null || res == '') {
+                                layer.msg("预测失败");
+                                return false;
+                            }
+                            var html = '';
+                            var s = '';
+                            html += '<tr>';
+                            html += '<td>预测结果：' + res + '</td>';
+                            html += '</tr>';
+                            // console.log(html)
+                            $("#userList").empty().append(html);
+                        }
+                    });
+                    return false;
+                });
+            });
+        </script>
+    </div>
+
+    <table class="layui-table">
+        <tbody id="userList">
+        <tr>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

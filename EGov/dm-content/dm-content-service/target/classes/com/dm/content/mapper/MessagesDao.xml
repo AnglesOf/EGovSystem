@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.dm.content.mapper.MessagesDao">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.dm.content.model.po.Message">
+        <id column="m_id" property="m_id" />
+        <result column="u_id" property="u_id" />
+        <result column="topic" property="topic" />
+        <result column="time" property="time" />
+        <result column="context" property="context" />
+        <result column="area" property="area" />
+        <result column="bq" property="bq" />
+        <result column="up" property="up" />
+        <result column="down" property="down" />
+        <result column="state" property="state" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        m_id, u_id, topic, time, context, area, bq, up, down, state
+    </sql>
+
+    <select id="selectMessages" resultType="com.dm.content.model.po.Message">
+        select * from t_gov_message
+    </select>
+
+    <select id="selectMessagesLimit" resultType="com.dm.content.model.po.Message">
+        select * from t_gov_message limit #{pageIndex},#{pageSize}
+    </select>
+
+    <select id="selectUserMessagesLimit" resultType="com.dm.content.model.po.Message">
+        select * from t_gov_message where u_id=#{u_id} limit #{pageIndex},#{pageSize}
+    </select>
+
+    <select id="selectUserMessagesByPhone" resultType="com.dm.content.model.po.Message">
+        select * from t_gov_message where u_id = (select id from t_user where phone=#{phone})
+    </select>
+
+    <select id="selectMessagesById" resultType="com.dm.content.model.po.Message">
+        select * from t_gov_message where m_id=#{m_id}
+    </select>
+
+    <select id="selectMessageStateById" resultType="int">
+        select state from t_gov_message where m_id=#{m_id}
+    </select>
+
+    <select id="MoSelectMessages" resultType="com.dm.content.model.po.Message">
+        select * from t_gov_message where topic like '%{t}%'
+    </select>
+
+    <select id="MoSelectMessagesLimit" resultType="com.dm.content.model.po.Message">
+        select * from t_gov_message where topic like '%{t}%' limit  #{pageIndex},#{pageSize}
+    </select>
+
+
+    <insert id="insertMessages" >
+        insert into t_gov_message(m_id,u_id,topic,time,context,area,bq,up,down,state) values(null,#{u_id}, #{topic}, #{time}, #{context}, #{area}, #{bq}, #{up}, #{down}, #{state})
+    </insert>
+
+    <delete id="deleteMessages">
+        delete from t_gov_message where m_id=#{m_id}
+    </delete>
+
+    <update id="updateMes">
+        update t_gov_message set topic=#{topic}, context=#{context}, area=#{area}, bq=#{bq} where m_id=#{m_id}
+    </update>
+
+    <update id="updateUpDown">
+        update t_gov_message set up=#{up}, down=#{down} where m_id=#{m_id}
+    </update>
+
+    <update id="updateState">
+        update t_gov_message set state=#{state} where m_id=#{m_id}
+    </update>
+
+    <select id="selectCounts" resultType="int">
+        select count(*) from t_gov_message
+    </select>
+
+    <select id="selectAreaCounts" resultType="int">
+        select count(*) from t_gov_message where area=#{area}
+    </select>
+
+    <select id="selectBqCounts" resultType="int">
+        select count(*) from t_gov_message where bq=#{bq}
+    </select>
+
+    <select id="selectDataCount" resultType="Integer">
+        select count(*) from t_gov_message where time between '2021-1-1 00:00:00' and '2021-1-31 23:59:59'
+        UNION ALL
+        select count(*) from t_gov_message where time between '2021-2-1 00:00:00' and '2021-2-31 23:59:59'
+        UNION ALL
+        select count(*) from t_gov_message where time between '2021-3-1 00:00:00' and '2021-3-31 23:59:59'
+        UNION ALL
+        select count(*) from t_gov_message where time between '2021-4-1 00:00:00' and '2021-4-31 23:59:59'
+        UNION ALL
+        select count(*) from t_gov_message where time between '2021-5-1 00:00:00' and '2021-5-31 23:59:59'
+        UNION ALL
+        select count(*) from t_gov_message where time between '2021-6-1 00:00:00' and '2021-6-31 23:59:59'
+        UNION ALL
+        select count(*) from t_gov_message where time between '2021-7-1 00:00:00' and '2021-7-31 23:59:59'
+        UNION ALL
+        select count(*) from t_gov_message where time between '2021-8-1 00:00:00' and '2021-8-31 23:59:59'
+        UNION ALL
+        select count(*) from t_gov_message where time between '2021-9-1 00:00:00' and '2021-9-31 23:59:59'
+        UNION ALL
+        select count(*) from t_gov_message where time between '2021-10-1 00:00:00' and '2021-10-31 23:59:59'
+        UNION ALL
+        select count(*) from t_gov_message where time between '2021-11-1 00:00:00' and '2021-11-31 23:59:59'
+        UNION ALL
+        select count(*) from t_gov_message where time between '2021-12-1 00:00:00' and '2021-12-31 23:59:59'
+    </select>
+
+    <select id="selectSolveMes" resultType="com.dm.content.model.po.Message">
+        select * from t_gov_message where state=0 limit 0,5
+    </select>
+
+    <select id="selectSolvingMes" resultType="com.dm.content.model.po.Message">
+        select * from t_gov_message where state=1 limit 0,5
+    </select>
+
+    <select id="selectSolvedMes" resultType="com.dm.content.model.po.Message">
+        select * from t_gov_message where state=2 limit 0,5
+    </select>
+
+    <select id="selectSolveMesCount" resultType="Integer">
+        select count(*) from t_gov_message where state=0 and bq=#{bq}
+    </select>
+
+    <select id="selectSolvingMesCount" resultType="Integer">
+        select count(*) from t_gov_message where state=1 and bq=#{bq}
+    </select>
+
+    <select id="selectSolvedMesCount" resultType="Integer">
+        select count(*) from t_gov_message where state=2 and bq=#{bq}
+    </select>
+
+    <select id="selectEarlyTime" resultType="String">
+        select min(time) from t_gov_message where state=2 and bq=#{bq}
+    </select>
+
+    <select id="selectLastTime" resultType="String">
+        select max(time) from t_gov_message where state=2 and bq=#{bq}
+    </select>
+
+    <select id="selectSecMessagesByPhone" resultType="com.dm.content.model.po.Message">
+        select * from t_gov_message where bq=#{section} and u_id = (select id from t_user where phone=#{phone})
+    </select>
+
+    <select id="selectSecMessagesByMid" resultType="com.dm.content.model.po.Message">
+        select * from t_gov_message where bq=#{section} and m_id=#{m_id}
+    </select>
+
+    <select id="selectMessagesLimitWithSec" resultType="com.dm.content.model.po.Message">
+        select * from t_gov_message where bq=#{bq} limit #{pageIndex},#{pageSize}
+    </select>
+
+    <select id="selectSolveMesLimitWithSec" resultType="com.dm.content.model.po.Message">
+        select * from t_gov_message where bq=#{bq} and state=0 limit #{pageIndex},#{pageSize}
+    </select>
+
+    <select id="selectSolvingMesLimitWithSec" resultType="com.dm.content.model.po.Message">
+        select * from t_gov_message where bq=#{bq} and state=1 limit #{pageIndex},#{pageSize}
+    </select>
+
+    <select id="selectSolvedMesLimitWithSec" resultType="com.dm.content.model.po.Message">
+        select * from t_gov_message where bq=#{bq} and state=2 limit #{pageIndex},#{pageSize}
+    </select>
+</mapper>

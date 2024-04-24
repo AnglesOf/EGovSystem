@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>智能政务系统</title>
+
+    <!-- 公共样式 开始 -->
+    <link rel="stylesheet" type="text/css" href="../css/base.css">
+    <link rel="stylesheet" type="text/css" href="../css/iconfont.css">
+    <link rel="stylesheet" type="text/css" href="../css/iconfont2.css">
+    <link rel="stylesheet" type="text/css" href="../layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="../css/reportForm.css">
+    <script type="text/javascript" src="../framework/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="../layui/layui.js"></script>
+    <!-- 滚动条插件 -->
+    <link rel="stylesheet" type="text/css" href="../css/jquery.mCustomScrollbar.css">
+    <script src="../framework/jquery-ui-1.10.4.min.js"></script>
+    <script src="../framework/jquery.mousewheel.min.js"></script>
+    <script src="../framework/jquery.mCustomScrollbar.min.js"></script>
+    <script src="../framework/echarts.min.js"></script>
+    <script src="../framework/cframe.js"></script><!-- 仅供所有子页面使用 -->
+    <!-- 公共样式 结束 -->
+
+    <style>
+        .layui-form {
+            margin-right: 30%;
+        }
+
+        .layui-form-label {
+            width: 100px;
+        }
+
+        .layui-input-block {
+            margin-left: 130px;
+        }
+    </style>
+</head>
+<body>
+<div class="cBody">
+    <div class="console">
+        <form class="layui-form" action="">
+            <div class="layui-form-item">
+                <div class="reportForm" style="width: 100%;">
+                    <a class="typeBut bl" href="./dataCountForm.html">留言</a>
+                    <a class="typeBut" href="./bqForm.html">各标签留言</a>
+                    <a class="typeBut" href="./areaForm.html">各地区留言</a>
+                    <a class="typeBut active" href="./ListHotMessages.html">热点留言</a>
+                    <a class="typeBut br" href="./cyForm.html">词云</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="reportForm_main">
+        <div class="collectData">
+            <div class="layui-row">
+                <div class="layui-col-md3 br">
+                    <div class="layui-col-md6">
+                        <div class="title">访问人数</div>
+                        <div class="nums"><font id="visitCount">0</font><span>人</span></div>
+                    </div>
+                </div>
+                <div class="layui-col-md3 br">
+                    <div class="layui-col-md6">
+                        <div class="title">留言总数量</div>
+                        <div class="nums"><font id="messageCount">0</font></div>
+                    </div>
+                    <div class="layui-col-md6">
+                        <div class="title">用户总数量</div>
+                        <div class="nums"><font id="userCount">0</font></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="reportType_tj">
+        <div class="layui-form">
+            <div class="layui-input-inline">
+                <select name="reportType" id="reportType" lay-filter="reportType">
+                    <option value="留言数量折线图">留言数量折线图</option>
+                    <option value="各标签留言分布柱状图">各标签留言分布柱状图</option>
+                    <option value="各区域留言">各区域留言</option>
+                    <option value="热点留言" selected>热点留言</option>
+                </select>
+            </div>
+            <div class="layui-input-inline">
+                <a class="pressBut">【按月】</a>
+            </div>
+            <button class="layui-btn" onclick="hotTopic(this)">开始挖掘热点留言</button>
+        </div>
+    </div>
+
+    <table class="layui-table">
+        <thead>
+        <tr>
+            <th>m_id</th>
+            <th>u_id</th>
+            <th>标题</th>
+            <th>时间</th>
+            <th>正文</th>
+            <th>区域</th>
+            <th style="color: blue">类别</th>
+            <th>up</th>
+            <th>down</th>
+            <th style="color: red">热度</th>
+        </tr>
+        </thead>
+
+        <tbody id="messageList">
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td style="color: blue"><a href="">1</a></td>
+            <td></td>
+            <td></td>
+            <td style="color: red">200</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<!-- layUI 分页模块 -->
+<div id="pages"></div>
+</body>
+<script>
+    window.onload = function () {
+        loadData();  //请求数据
+        getPage();     //分页操作
+    };
+
+
+    var page = 0; //设置首页页码
+    var limit = 10;  //设置一页显示的条数
+    var total;    //总条数
+
+    function hotTopic(t) {
+        t.innerText="已启动模型";
+        $.ajax({
+            type: "GET",
+            url: "/EGov/hotTopic/calcHotTopic",//对应controller的URL
+            async: true,
+            data: {},
+            success: function (data) {
+                if(data===1){
+                    t.innerText="计算完成";
+                    loadData();
+                }else {
+                    t.innerText="启动模型失败";
+                }
+            }
+        });
+    }
+
+    function loadData() {
+        $.ajax({
+            type: "GET",
+            url: "/EGov/hotTopic/findHotTopic",//对应controller的URL
+            async: false,
+            data: {},
+            success: function (data) {
+                total = data.length;  //设置总条数
+                var html = '';
+                for (var i = 0; i < total; i++) {
+                    html += '<tr>';
+                    html += '<td>' + data[i].m_id + '</td>';
+                    html += '<td>' + data[i].u_id + '</td>';
+                    html += '<td>' + data[i].topic.substr(0, 7) + '...' + '</td>';
+                    html += '<td>' + data[i].time + '</td>';
+                    html += '<td><a href="/EGov/messages/searchByMidForGov?m_id=' + data[i].m_id + '">' + data[i].context.substr(0, 7) + '...' + '</a></td>';
+                    html += '<td>' + data[i].area + '</td>';
+                    html += '<td style="color: blue">' + data[i].bq + '</td>';
+                    html += '<td>' + data[i].up + '</td>';
+                    html += '<td>' + data[i].down + '</td>';
+                    html += '<td style="color: red">' + data[i].hot + '</td>';
+                    html += '<tr>';
+                    // console.log(html)
+                    $("#messageList").empty().append(html);
+                }
+            }
+        });
+    }
+
+    function getPage() {
+        layui.use(['laypage', 'layer'], function () {
+            var laypage = layui.laypage;
+            //执行一个laypage实例
+            laypage.render({
+                elem: 'pages', //注意，这里的 test1 是 ID，不用加 # 号
+                count: 5, //数据总数，从服务端得到
+                limit: limit,   //每页条数设置
+                layout: ['count', 'prev', 'page', 'next', 'skip'],
+                jump: function (obj, first) {
+                    //obj包含了当前分页的所有参数，比如：
+                    page = (obj.curr - 1) * limit;  //改变当前页码
+                    //首次不执行
+                    if (!first) {
+                        loadData()  //加载数据
+                    }
+                }
+            });
+        });
+    }
+
+    var cacheData = null;
+    $.ajax({
+        type: "get",
+        url: "/EGov/redisDate/getCache",
+        async: false,
+        success: function (data) {
+            cacheData = data;
+            document.getElementById("visitCount").innerText = data.visitCount;
+            document.getElementById("messageCount").innerText = data.messageCount;
+            document.getElementById("userCount").innerText = data.userCount;
+        }
+    });
+</script>
+</html>

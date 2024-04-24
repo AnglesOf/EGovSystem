@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <!-- Google Chrome Frame也可以让IE用上Chrome的引擎: -->
+    <meta name="renderer" content="webkit">
+    <!--国产浏览器高速模式-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="李幸阜"/>
+    <!-- 作者 -->
+    <meta name="revised" content="李幸阜"/>
+    <!-- 定义页面的最新版本 -->
+    <meta name="description" content="网站首页"/>
+    <!-- 网站简介 -->
+    <meta name="keywords" content="搜索关键字，以半角英文逗号隔开"/>
+    <title>李幸阜开发</title>
+
+    <!-- 公共样式 开始 -->
+    <link href="../css/base.css" rel="stylesheet" type="text/css">
+    <link href="../layui/css/layui.css" rel="stylesheet" type="text/css">
+    <link href="../css/css.css" rel="stylesheet"/>
+    <link href="../css/app.158927d2966ac2f157d8093f899ab95b.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../css/iconfont2.css">
+    <link rel="stylesheet" type="text/css" href="../css/reportForm.css">
+    <script type="text/javascript" src="../layui/layui.js"></script>
+    <script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="../js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../js/js.js"></script>
+    <!-- 滚动条插件 -->
+    <link rel="stylesheet" type="text/css" href="../css/jquery.mCustomScrollbar.css">
+    <!-- 绘图插件 -->
+    <script src="../framework/echarts.min.js"></script>
+    <!-- 公共样式 结束 -->
+</head>
+
+<body style="background:url(../images/bodybg.png);">
+<div style="width:100%;height:180px"></div>
+<div class="nav">
+    <ul>
+        <li><a></a></li>
+        <li><a href="../index2.html">网站首页</a></li>
+        <li><a href="./addMessage.html">留 言</a></li>
+        <li><a href="./userMessages.html">我的留言</a></li>
+        <li><a href="./dataCountForm.html">数据统计</a></li>
+        <li><a href="../login.html" id="login">登录</a></li>
+        <li><a href="./register.html" id="register">注册</a></li>
+        <li><a></a></li>
+        <div class="clears"></div>
+    </ul>
+</div><!--nav/-->
+
+<div class="cont">
+    <div class="console">
+        <div class="layui-form-item">
+            <div class="reportForm" style="width: 100%;">
+                <a class="typeBut bl active" href="./dataCountForm.html">留言</a>
+                <a class="typeBut" href="./bqForm.html">各标签留言</a>
+                <a class="typeBut" href="./areaForm.html">各地区留言</a>
+                <a class="typeBut" href="./ListHotMessages.html">热点留言</a>
+                <a class="typeBut br" href="./cyForm.html">词云</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="reportForm_main">
+        <div class="collectData">
+            <div class="layui-row">
+                <div class="layui-col-md3 br">
+                    <div class="layui-col-md6">
+                        <div class="title">访问人数</div>
+                        <div class="nums"><font id="visitCount">0</font><span>人</span></div>
+                    </div>
+                </div>
+                <div class="layui-col-md3 br">
+                    <div class="layui-col-md6">
+                        <div class="title">留言总数量</div>
+                        <div class="nums"><font id="messageCount">0</font></div>
+                    </div>
+                    <div class="layui-col-md6">
+                        <div class="title">用户总数量</div>
+                        <div class="nums"><font id="userCount">0</font></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="reportType_tj">
+            <form class="layui-form" action="">
+                <div class="layui-input-inline">
+                    <select name="reportType" id="reportType" lay-filter="reportType">
+                        <option value="留言数量折线图" selected>留言数量折线图</option>
+                        <option value="各标签留言分布柱状图">各标签留言分布柱状图</option>
+                        <option value="各区域留言">各区域留言</option>
+                        <option value="热点留言">热点留言</option>
+                    </select>
+                </div>
+                <div class="layui-input-inline">
+                    <a class="pressBut">【按月】</a>
+                </div>
+                <div class="changeRate">
+                    <div class="layui-col-md6 left">100</div>
+                    <div class="layui-col-md6 right">
+                        <span class="data up">-99.42%<i class="iconfont icon-xiangshangjiantoucuxiao"></i></span>
+                        <span class="text">相比上月</span>
+                    </div>
+                </div>
+                <div id="myReport" style="width: 100%; height: 400px;"></div>
+            </form>
+
+            <script type="text/javascript">
+                // 基于准备好的dom，初始化echarts实例
+                var myChart = echarts.init(document.getElementById('myReport'));
+
+                // 指定图表的配置项和数据
+                var option = {
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{b}: {c}",
+                    },//提示框，鼠标悬浮交互时的信息提示
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: ['2021-01', '2021-02', '2021-03', '2021-04', '2021-05', '2021-06', '2021-07', '2021-08', '2021-09', '2021-10', '2021-11', '2021-12', ''],
+                        name: '日期',    // 轴名称
+                        nameLocation: 'end',  // 轴名称相对位置
+                        axisLine: {       // 坐标轴 轴线
+                            show: true,  // 是否显示
+                            symbol: ['none', 'arrow'],  // 是否显示轴线箭头
+                            // ------   线 ---------
+                        },
+                    },
+                    yAxis: {
+                        type: 'value',
+                        name: '数量',    // 轴名称
+                        nameLocation: 'end',  // 轴名称相对位置
+                        axisLine: {       // 坐标轴 轴线
+                            show: true,  // 是否显示
+                            symbol: ['none', 'arrow'],  // 是否显示轴线箭头
+                            // ------   线 ---------
+                        },
+                    },
+                    grid: {
+                        top: 40,
+                        bottom: 20,
+                        left: 50,
+                        right: 50,
+                        containLabel: true,
+                    },
+                    series: [{
+                        data: [820, 932, 901, 934, 1290, 1330, 1320, 820, 932, 901, 934, 1290],
+                        type: 'line',
+                        areaStyle: {},
+                        legendHoverLink: true,  // 是否启用图列 hover 时的联动高亮
+                        label: {   // 图形上的文本标签
+                            show: true,
+                            position: 'top', // 相对位置
+                            rotate: 0,  // 旋转角度
+                            color: '#000000'
+                        },
+                    }]
+                };
+                myChart.setOption(option);
+
+                // function refreshData(data,_this) {
+                // 	$(_this).addClass("active");
+                // 	$(_this).siblings().removeClass("active");
+                // 	if(!myChart) {
+                // 		return;
+                // 	}
+                //
+                // 	//更新数据
+                // 	var option = myChart.getOption();
+                // 	option.series[0].data = data;
+                // 	myChart.setOption(option);
+                // }
+            </script>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footBottom">
+            <p>Copyright 2022 XX省XX市政府,All right Reserved 版权所有</p>
+            <p>未经本网书面授权，请勿转载、摘编或建立镜像，负责视为侵权。 </p>
+            <p>沪ICP备0000000号 技术支持：<a href="" target="_blank">xxxx</a></p>
+        </div><!--footBottom/-->
+    </div><!--footer/-->
+</div>
+</body>
+<script>
+    window.onload = function () {
+        setUserName();
+    };
+    var cacheData = null;
+    $.ajax({
+        type: "get",
+        url: "/EGov/redisDate/getCache",
+        async: false,
+        success: function (data) {
+            cacheData = data;
+            document.getElementById("visitCount").innerText = data.visitCount;
+            document.getElementById("messageCount").innerText = data.messageCount;
+            document.getElementById("userCount").innerText = data.userCount;
+            //更新数据
+            var myChart = echarts.init(document.getElementById('myReport'));
+            var option = myChart.getOption();
+            option.series[0].data = data.dataCount;
+            myChart.setOption(option);
+        }
+    });
+
+    function delCookie() {
+        $.removeCookie("userId", {domain: 'localhost', path: '/EGov'});
+        $.removeCookie("userName", {domain: 'localhost', path: '/EGov'});
+        $.removeCookie("userPhone", {domain: 'localhost', path: '/EGov'});
+        $.removeCookie("userPassword", {domain: 'localhost', path: '/EGov'});
+        $.removeCookie("userFlag", {domain: 'localhost', path: '/EGov'});
+        $.removeCookie("userSex", {domain: 'localhost', path: '/EGov'});
+        $.removeCookie("userState", {domain: 'localhost', path: '/EGov'});
+        $.removeCookie("userSection", {domain: 'localhost', path: '/EGov'});
+    }
+
+    function setUserName() {
+        var userName = $.cookie('userName');
+        if (userName != null) {
+            var login = document.getElementById('login');
+            login.innerText = '欢迎' + userName;
+            login.href = '/EGov/userHTML/userInfo.html';
+            var register = document.getElementById('register');
+            register.innerHTML = '退出登录';
+            register.href = "/EGov/index2.html";
+            register.onclick = delCookie;
+        }
+    }
+</script>
+
+</html>

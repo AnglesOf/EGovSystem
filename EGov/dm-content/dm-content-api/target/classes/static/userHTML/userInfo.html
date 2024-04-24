@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <title>智能政务系统</title>
+    <meta name="keywords" content="智能政务系统"/>
+    <meta name="description" content="智能政务系统"/>
+
+    <link href="../css/css.css" rel="stylesheet"/>
+    <link href="../css/app.158927d2966ac2f157d8093f899ab95b.css" rel="stylesheet"/>
+    <script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="../js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../js/js.js"></script>
+</head>
+
+<body style="background:url(../images/bodybg.png);">
+<div style="width:100%;height:180px"></div>
+<div class="nav">
+    <ul>
+        <li><a></a></li>
+        <li><a href="../index2.html">网站首页</a></li>
+        <li><a href="./addMessage.html">留   言</a></li>
+        <li><a href="./userMessages.html">我的留言</a></li>
+        <li><a href="./dataCountForm.html">数据统计</a></li>
+        <li><a href="../login.html" id="login">登录</a></li>
+        <li><a href="./register.html" id="register">注册</a></li>
+        <li><a></a></li>
+        <div class="clears"></div>
+    </ul>
+</div><!--nav/-->
+
+<div class="cont">
+    <div style="display: block;/* text-align: center; */position: relative;left: 35%;margin-top: 3%;;margin-bottom:12%">
+        <form action="/EGov/user/modifyInfo" method="get">
+
+            <div style="display: flex;">
+                <div class="infoText">ID号</div>
+                <div class="infoInput">
+                    <input type="text" id="i1" name="id" value="" readonly  unselectable="on">
+                </div>
+            </div>
+
+            <div style="display: flex;margin-top: 20px;">
+                <div class="infoText">姓名</div>
+                <div class="infoInput">
+                    <input type="text" id="i2" name="name" value="">
+                </div>
+            </div>
+
+            <div style="display: flex;margin-top: 20px;">
+                <div class="infoText">电话</div>
+                <div class="infoInput">
+                    <input type="text" id="i3" name="phone" value="">
+                </div>
+            </div>
+
+            <div style="display: flex;margin-top: 20px;">
+                <div class="infoText" style="margin-top:2px;">性别</div>
+                <div class="infoSel">
+                    <select name="sex" id="i4" style="text-align: center;font-size:15px">
+                        <option value="null" style="text-align: center;font-size:15px">请选择</option>
+                        <option value="男" style="text-align: center;font-size:15px">男</option>
+                        <option value="女" style="text-align: center;font-size:15px">女</option>
+                    </select>
+                </div>
+            </div>
+            <div style="display: flex;margin-top: 20px;text-align: center;">
+                <div>
+                    <br><br>
+                </div>
+                <div class="" style="margin-left:1%;">
+                    <button class="infoButton" type="submit" onclick="changeCookie()">保存</button>
+                    <button class="infoButton" type='button' onclick="window.location.href='../userHTML/modifyPassword.html'">修改密码</button>
+                    <button class="infoButton" type='button' onclick="window.location.href='/EGov/user/loginOff'">注销</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div><!--footer/-->
+
+<div class="footer">
+    <div class="footBottom">
+        <p>Copyright 2022 XX省XX市政府,All right Reserved 版权所有</p>
+        <p>未经本网书面授权，请勿转载、摘编或建立镜像，负责视为侵权。 </p>
+        <p>沪ICP备0000000号 技术支持：<a href="" target="_blank">xxxx</a></p>
+    </div><!--footBottom/-->
+</div><!--footer/-->
+<script>
+    function changeCookie(){
+        var input2 = document.getElementById('i2');
+        var input3 = document.getElementById('i3');
+        var input4 = document.getElementById('i4');
+        $.cookie('userName', input2.value, {path:"/EGov"});
+        $.cookie('userPhone', input3.value, {path:"/EGov"});
+        $.cookie('userSex', selectItemByValue2(input4), {path:"/EGov"});
+    }
+
+    function delCookie() {
+        $.removeCookie("userId", {domain: 'localhost', path: '/EGov'});
+        $.removeCookie("userName", {domain: 'localhost', path: '/EGov'});
+        $.removeCookie("userPhone", {domain: 'localhost', path: '/EGov'});
+        $.removeCookie("userPassword", {domain: 'localhost', path: '/EGov'});
+        $.removeCookie("userFlag", {domain: 'localhost', path: '/EGov'});
+        $.removeCookie("userSex", {domain: 'localhost', path: '/EGov'});
+        $.removeCookie("userState", {domain: 'localhost', path: '/EGov'});
+        $.removeCookie("userSection", {domain: 'localhost', path: '/EGov'});
+    }
+
+    function selectItemByValue(objSelect, objItemText) {
+        var isExit = false;
+        for (var i = 0; i < objSelect.options.length; i++) {
+            if (objSelect.options[i].value === objItemText) {
+                objSelect.options[i].selected = true;
+                isExit = true;
+                break;
+            }
+        }
+    }
+
+    function selectItemByValue2(objSelect) {
+        for (var i = 0; i < objSelect.options.length; i++) {
+            if (objSelect.options[i].selected === true) {
+                return objSelect.options[i].value;
+            }
+        }
+    }
+
+    function setUserInfo() {
+        var input1 = document.getElementById('i1');
+        input1.value = "" + $.cookie('userId');
+
+        var input2 = document.getElementById('i2');
+        input2.value = "" + $.cookie('userName');
+
+        var input3 = document.getElementById('i3');
+        input3.value = "" + $.cookie('userPhone');
+
+        var input4 = document.getElementById('i4');
+        selectItemByValue(input4, $.cookie('userSex'));
+    }
+
+    function setUserName() {
+        var userName = $.cookie('userName');
+        if (userName != null) {
+            var login = document.getElementById('login');
+            login.innerText = '欢迎' + userName;
+            login.href = 'userInfo.html';
+            var register = document.getElementById('register');
+            register.innerHTML = '退出登录';
+            register.href = "/EGov/index2.html";
+            register.onclick = delCookie;
+        }
+    }
+    setUserName();
+    setUserInfo();
+</script>
+</body>
+</html>

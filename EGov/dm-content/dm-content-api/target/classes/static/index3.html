@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+	<!-- Google Chrome Frame也可以让IE用上Chrome的引擎: -->
+	<meta name="renderer" content="webkit">
+	<!--国产浏览器高速模式-->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="author" content="李幸阜" />
+	<!-- 作者 -->
+	<meta name="revised" content="李幸阜" />
+	<!-- 定义页面的最新版本 -->
+	<meta name="description" content="智能政务系统" />
+	<!-- 网站简介 -->
+	<meta name="keywords" content="智能政务系统" />
+	<title>智能政务系统</title>
+
+	<!-- 公共样式 开始 -->
+	<link href="css/base.css" rel="stylesheet" type="text/css">
+	<link href="css/iconfont.css" rel="stylesheet" type="text/css">
+	<link href="layui/css/layui.css" rel="stylesheet" type="text/css">
+	<script src="framework/jquery-1.11.3.min.js" type="text/javascript"></script>
+	<script src="layui/layui.js" type="text/javascript"></script>
+	<!-- 滚动条插件 -->
+	<link href="css/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
+	<script src="framework/jquery-ui-1.10.4.min.js"></script>
+	<script src="framework/jquery.mousewheel.min.js"></script>
+	<script src="framework/jquery.mCustomScrollbar.min.js"></script>
+	<script src="framework/cframe.js"></script><!-- 仅供所有子页面使用 -->
+	<!-- 公共样式 结束 -->
+	<link href="css/frameStyle.css" rel="stylesheet" type="text/css">
+	<script src="framework/frame.js" type="text/javascript"></script>
+</head>
+
+<body>
+<!-- 左侧菜单 - 开始 -->
+<div class="frameMenu">
+	<div class="logo">
+		<img src="images/logo.png" alt="logo"/>
+		<div class="logoText">
+			<h1>李幸阜开发</h1>
+			<p>develop by Li Xingfu</p>
+		</div>
+	</div>
+
+	<div class="menu">
+		<ul>
+			<li>
+				<a class="menuFA" href="javascript:void(0)" onclick="menuCAClick('govUserHTML/dataCountForm.html',this)">
+					<i class="iconfont icon-shouye left"></i>首页
+				</a>
+			</li>
+			<li>
+				<a class="menuFA" href="javascript:void(0)" onclick="menuCAClick('sectionHTML/ListSolveMessages.html',this)">
+					<i class="iconfont icon-ercifenjian left"></i>
+					未处理留言
+				</a>
+			</li>
+			<li>
+				<a class="menuFA" href="javascript:void(0)" onclick="menuCAClick('sectionHTML/ListSolvingMessages.html',this)">
+					<i class="iconfont icon-ercifenjian left"></i>
+					正在处理留言
+				</a>
+			</li>
+			<li>
+				<a class="menuFA" href="javascript:void(0)" onclick="menuCAClick('sectionHTML/ListSolvedMessages.html',this)">
+					<i class="iconfont icon-ercifenjian left"></i>
+					已处理留言
+				</a>
+			</li>
+			<li>
+				<a class="menuFA" href="javascript:void(0)" onclick="menuCAClick('govUserHTML/bqForm.html',this)">
+					<i class="iconfont icon-biaodanpeizhi left"></i>
+					各标签留言分布图
+				</a>
+			</li>
+			<li>
+				<a class="menuFA" href="javascript:void(0)" onclick="menuCAClick('govUserHTML/areaForm.html',this)">
+					<i class="iconfont icon-ercifenjian left"></i>
+					各区域留言分布图
+				</a>
+			</li>
+			<li>
+				<a class="menuFA" href="javascript:void(0)" onclick="menuCAClick('govUserHTML/ListHotMessages.html',this)">
+					<i class="iconfont icon-ercifenjian left"></i>
+					热点留言
+				</a>
+			</li>
+			<li>
+				<a class="menuFA" href="javascript:void(0)" onclick="menuCAClick('govUserHTML/cyForm.html',this)">
+					<i class="iconfont icon-ercifenjian left"></i>
+					词云图
+				</a>
+			</li>
+			<li>
+				<a class="menuFA" href="javascript:void(0)" onclick="menuCAClick('sectionHTML/JiXiaoForm.html',this)">
+					<i class="iconfont icon-ercifenjian left"></i>
+					绩效
+				</a>
+			</li>
+		</ul>
+	</div>
+</div>
+<!-- 左侧菜单 - 结束 -->
+
+<div class="main">
+	<!-- 核心区域 - 开始 -->
+	<div class="frameMain">
+		<div class="title" id="frameMainTitle">
+			<span><i class="iconfont icon-xianshiqi"></i>后台首页</span>
+		</div>
+		<div class="con">
+			<iframe id="mainIframe" src="govUserHTML/dataCountForm.html" scrolling="no"></iframe>
+		</div>
+	</div>
+	<!-- 核心区域 - 结束 -->
+</div>
+</body>
+
+</html>

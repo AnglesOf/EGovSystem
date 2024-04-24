@@ -1,0 +1,272 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <!-- Google Chrome Frame也可以让IE用上Chrome的引擎: -->
+    <meta name="renderer" content="webkit">
+    <!--国产浏览器高速模式-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="李幸阜"/>
+    <!-- 作者 -->
+    <meta name="revised" content="李幸阜"/>
+    <!-- 定义页面的最新版本 -->
+    <meta name="description" content="修改机房信息"/>
+    <!-- 网站简介 -->
+    <meta name="keywords" content="搜索关键字，以半角英文逗号隔开"/>
+    <title>李幸阜开发</title>
+
+    <!-- 公共样式 开始 -->
+    <link href="../css/base.css" rel="stylesheet" type="text/css">
+    <link href="../layui/css/layui.css" rel="stylesheet" type="text/css">
+    <link href="../css/css.css" rel="stylesheet"/>
+    <link href="../css/app.158927d2966ac2f157d8093f899ab95b.css" rel="stylesheet"/>
+
+    <script type="text/javascript" src="../layui/layui.js"></script>
+    <script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="../js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../js/js.js"></script>
+</head>
+
+<body style="background:url(../images/bodybg.png);">
+<div style="width:100%;height:180px"></div>
+<div class="nav">
+    <ul>
+        <li><a></a></li>
+        <li><a href="../index2.html">网站首页</a></li>
+        <li><a href="/EGov/userHTML/addMessage.html">留   言</a></li>
+        <li><a href="/EGov/userHTML/userMessages.html">我的留言</a></li>
+        <li><a href="./dataCountForm.html">数据统计</a></li>
+        <li><a href="../login.html" id="login">登录</a></li>
+        <li><a href="./register.html" id="register">注册</a></li>
+        <li><a></a></li>
+        <div class="clears"></div>
+    </ul>
+</div><!--nav/-->
+
+<div class="cont">
+    <div class="console">
+        <form class="layui-form" action="/EGov/messages/searchByMidAjax">
+            <div class="layui-form-item">
+                <div class="layui-input-inline">
+                    <label>
+                        <input type="text" name="m_id" required lay-verify="m_id" placeholder="请输入留言ID" autocomplete="off" class="layui-input">
+                    </label>
+                </div>
+                <button class="layui-btn" lay-submit lay-filter="formDemo" type="submit">检索</button>
+            </div>
+        </form>
+
+        <script>
+            layui.use('form', function () {
+                var form = layui.form;
+                form.verify({
+                    m_id: function (value, item) { //value：表单的值、item：表单的DOM对象
+                        if (value == null || value == "") {
+                            return '请输入留言ID！';
+                        }
+                    },
+                });
+                //监听提交
+                form.on('submit(formDemo)', function (data) {
+                    $.ajax({
+                        type: 'get',
+                        //url: "{:url('messages/searchByMid')}",
+                        url: "/EGov/messages/searchByMidAjax",
+                        async: false,
+                        data: {"m_id":data.field.m_id,},
+                        success: function (res) {
+                            if(res[0] == null){
+                                alert("没有该留言");
+                                return false;
+                            }
+                            var html = '';
+                            var s = '';
+                            html += '<tr>';
+                            html += '<td>' + res[0].m_id + '</td>';
+                            html += '<td>' + res[0].u_id + '</td>';
+                            html += '<td>' + res[0].topic + '</td>';
+                            html += '<td>' + res[0].time + '</td>';
+                            html += '<td>' + res[0].context.substr(0, 7) + '...' + '</td>';
+                            html += '<td>' + res[0].area + '</td>';
+                            html += '<td>' + res[0].bq + '</td>';
+                            html += '<td>' + res[0].up + '</td>';
+                            html += '<td>' + res[0].down + '</td>';
+                            s = res[0].state==0?'未办理':res[0].state==1?'办理中':'已办理';
+                            html += '<td>' + s + '</td>';
+                            html += '<td><a href="/EGov/messages/removeMessages?m_id=' + res[0].m_id + '"><button class="layui-btn layui-btn-xs layui-btn-danger">撤回</button></a></td>'
+                            html += '<td><a href="/EGov/messages/searchByMid?m_id=' + res[0].m_id + '"><button class="layui-btn layui-btn-xs layui-btn-normal">修改</button></a></td>';
+                            html += '<td><a href="/EGov/messages/visitMessage?m_id=' + res[0].m_id + '"><button class="layui-btn layui-btn-xs layui-btn-warm">查看</button></a></td>';
+                            html += '<tr>';
+                            // console.log(html)
+                            $("#messageList").empty().append(html);
+                        }
+                    });
+                    return false;
+                });
+            });
+        </script>
+    </div>
+
+    <table class="layui-table">
+        <thead>
+        <tr>
+            <th>m_id</th>
+            <th>u_id</th>
+            <th>标题</th>
+            <th>时间</th>
+            <th>正文</th>
+            <th>区域</th>
+            <th>类别</th>
+            <th>up</th>
+            <th>down</th>
+            <th>状态</th>
+            <th>操作</th>
+            <th>操作</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+
+        <tbody id="messageList">
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><a href="">
+                <button class="layui-btn layui-btn-xs layui-btn-danger">撤回</button>
+            </a></td>
+            <td><a href="">
+                <button class="layui-btn layui-btn-xs layui-btn-normal">修改</button>
+            </a></td>
+            <td><a href="">
+                <button class="layui-btn layui-btn-xs layui-btn-warm">查看</button>
+            </a></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- layUI 分页模块 -->
+    <div id="pages"></div>
+
+    <div class="footer">
+        <div class="footBottom">
+            <p>Copyright 2022 XX省XX市政府,All right Reserved 版权所有</p>
+            <p>未经本网书面授权，请勿转载、摘编或建立镜像，负责视为侵权。 </p>
+            <p>沪ICP备0000000号 技术支持：<a href="" target="_blank">xxxx</a></p>
+        </div><!--footBottom/-->
+    </div><!--footer/-->
+    <script>
+        window.onload = function () {
+            loadData();  //请求数据
+            getPage();     //分页操作
+        };
+        var page = 0; //设置首页页码
+        var limit = 10;  //设置一页显示的条数
+        var total;    //总条数
+
+
+        function loadData() {
+            $.ajax({
+                type: "GET",
+                url: "/EGov/messages/findUserMessagesLimit",//对应controller的URL
+                async: false,
+                data: {
+                    "pageIndex": page,
+                    "pageSize": limit,
+                },
+                success: function (data, status, xhr) {
+                    if(xhr.getResponseHeader('CONTEXTPATH')!=null){
+                        window.location.href=xhr.getResponseHeader('CONTEXTPATH');
+                    }
+                    total = data.length;  //设置总条数
+                    var html = '';
+                    var s = '';
+                    for (var i = 0; i < total; i++) {
+                        html += '<tr>';
+                        html += '<td>' + data[i].m_id + '</td>';
+                        html += '<td>' + data[i].u_id + '</td>';
+                        if(data[i].topic!=null) {
+                            html += '<td>' + data[i].topic + '</td>';
+                        }
+                        else {
+                            html += '<td>空标题</td>';
+                        }
+                        html += '<td>' + data[i].time + '</td>';
+                        if(data[i].context!=null) {
+                            html += '<td>' + data[i].context.substr(0, 9) + '...' + '</td>';
+                        }
+                        else {
+                            html += '<td>空正文</td>';
+                        }
+                        html += '<td>' + data[i].area + '</td>';
+                        html += '<td>' + data[i].bq + '</td>';
+                        html += '<td>' + data[i].up + '</td>';
+                        html += '<td>' + data[i].down + '</td>';
+                        s = data[i].state==0?'未办理':data[i].state==1?'办理中':'已办理';
+                        html += '<td>' + s + '</td>';
+                        html += '<td><a href="/EGov/messages/removeMessages?m_id=' + data[i].m_id + '"><button class="layui-btn layui-btn-xs layui-btn-danger">撤回</button></a></td>'
+                        html += '<td><a href="/EGov/messages/searchByMid?m_id=' + data[i].m_id + '"><button class="layui-btn layui-btn-xs layui-btn-normal">修改</button></a></td>';
+                        html += '<td><a href="/EGov/messages/visitMessage?m_id=' + data[i].m_id + '"><button class="layui-btn layui-btn-xs layui-btn-warm">查看</button></a></td>';
+                        html += '<tr>';
+                    }
+                    // console.log(html)
+                    $("#messageList").empty().append(html);
+                }
+            });
+        }
+
+        function getPage() {
+            layui.use(['laypage', 'layer'], function () {
+                var laypage = layui.laypage;
+
+                //执行一个laypage实例
+                laypage.render({
+                    elem: 'pages', //注意，这里的 test1 是 ID，不用加 # 号
+                    count: total, //数据总数，从服务端得到
+                    limit: limit,   //每页条数设置
+                    layout: ['count', 'prev', 'page', 'next', 'skip'],
+                    jump: function (obj, first) {
+                        //obj包含了当前分页的所有参数，比如：
+                        page = (obj.curr-1) * limit;  //改变当前页码
+                        //首次不执行
+                        if (!first) {
+                            loadData()  //加载数据
+                        }
+                    }
+                });
+            });
+        }
+
+        function delCookie(){
+            $.removeCookie("userId", {domain:'localhost',path:'/EGov'});
+            $.removeCookie("userName", {domain:'localhost',path:'/EGov'});
+            $.removeCookie("userPhone", {domain:'localhost',path:'/EGov'});
+            $.removeCookie("userPassword", {domain:'localhost',path:'/EGov'});
+            $.removeCookie("userFlag", {domain:'localhost',path:'/EGov'});
+            $.removeCookie("userSex", {domain:'localhost',path:'/EGov'});
+            $.removeCookie("userState", {domain:'localhost',path:'/EGov'});
+            $.removeCookie("userSection", {domain: 'localhost', path: '/EGov'});
+        }
+        function setUserName(){
+            var userName = $.cookie('userName');
+            if(userName!=null){
+                var login = document.getElementById('login');
+                login.innerText = '欢迎' + userName;
+                login.href = '/EGov/userHTML/userInfo.html';
+                var register = document.getElementById('register');
+                register.innerHTML = '退出登录';
+                register.href = "/EGov/index2.html";
+                register.onclick = delCookie;
+            }
+        }
+        setUserName();
+    </script>
+</div>
+</body>
+</html>
